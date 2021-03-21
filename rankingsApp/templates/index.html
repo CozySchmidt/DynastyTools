@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="cover.css" rel="stylesheet">
+    <link href="../styles/cover.css" rel="stylesheet">
     <title>Hello, world!</title>
   </head>
   <body>
@@ -19,21 +19,58 @@
             </nav>
           </div>
         </header>
-        
-        {% if newMatchup %}
+
+        {% if nextMatchup %}
             <main role="main" class="inner cover">
-                <button type="submit" class="big button">{{ newMatchup.PlayerOne.Name }}</button>
-                <button type="submit" class="big button">{{ newMatchup.PlayerTwo.Name }}</button>
+                <form id="matchup-form" method="post">
+                    {% csrf_token %}
+                    <button class="player-button" type="submit" id="player-one" value="{{ nextMatchup.PlayerOneID }}">{{ nextMatchup.PlayerOneName }}</button>
+                    <button class="player-button" type="submit" id="player-two"  value="{{ nextMatchup.PlayerTwoID }}">{{ nextMatchup.PlayerTwoName }}</button>
+                </form>
             </main>
         {% else %}
         {% endif %}
+
         <footer class="mastfoot mt-auto">
         </footer>
       </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+    <script>
+
+        function SetMatchupForm()
+        {
+
+        }
+
+        $(".player-button").click(function(event){
+            event.preventDefault();
+            console.log(event)
+            $.ajax({
+                url: '/PostMatchup',
+                type: "POST",
+                data: {
+                    player1: document.getElementById("player-one").value,
+                    player2: document.getElementById("player-two").value,
+                    winner: event.target.value,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function(json){
+                    console.log(json);
+                    document.getElementById("player-one").value = json.nextMatchup.PlayerOneID;
+                    document.getElementById("player-one").innerHTML = json.nextMatchup.PlayerOneName;
+                    document.getElementById("player-two").value = json.nextMatchup.PlayerTwoID;
+                    document.getElementById("player-two").innerHTML = json.nextMatchup.PlayerTwoName;
+                },
+
+                error: function() {
+                    console.log("failure is not an option");
+                }  
+            })
+        });
+    </script>
+</body>
 </html>

@@ -1,20 +1,47 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import PlayerModel, MatchupsModel
 import random
 from django.template import loader
+from django.core import serializers
+from .rankingsEngine import rePlayer
 
-# Create your views here.
-def index(request):
-    newMatchup = GetNextMatchup()
+
+def Index(request):
+    nextMatchup = GetNextMatchup()
     template = loader.get_template("index.html")
-    context = {'newMatchup': newMatchup}
+    context = {'nextMatchup': nextMatchup}
     return render(request, 'index.html', context)
     
 
+
+def PostMatchup(request):
+    if request.is_ajax() and request.method == "POST":
+        print(request.POST)
+        PlayerOne = PlayerModel.objects.get(id=request.POST.get("player1"))
+        PlayerTwo = PlayerModel.objects.get(id=request.POST.get("player2"))
+        Winner = PlayerModel.objects.get(id=request.POST.get("winner"))
+
+        matchup = MatchupsModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
+        matchup.save()
+
+        EvaluateMatchup(matchup)
+
+        nextMatchup = GetNextMatchup()
+        return JsonResponse({"nextMatchup": nextMatchup}, status=200)
+    return JsonResponse({"error"}, status=400)
+
+
+
 def GetNextMatchup():
     players = PlayerModel.objects.order_by('?')[:2]
-    return MatchupsModel(PlayerOne=players[0], PlayerTwo=players[1])
+    matchup = {
+        'PlayerOneID': players[0].id,
+        'PlayerOneName': players[0].Name,
+        'PlayerTwoID': players[1].id,
+        'PlayerTwoName': players[1].Name,
+    }
+    return matchup
 
 
 def EvaluateMatchup(matchup):
@@ -24,12 +51,23 @@ def EvaluateMatchup(matchup):
     player1 = PlayerModel.objects.get(id=matchup.PlayerOne.id)
     player2 = PlayerModel.objects.get(id=matchup.PlayerTwo.id)
 
-    if matchup.PlayerOne is matchup.Winner:
-        player1.update_player([player2.rating], [player2.rd], [1])
-        player2.update_player([player1.rating], [player1.rd], [0])
-    elif matchup.PlayerTwo.Name == matchup.Winner.Name:
-        player1.update_player([player2.rating], [player2.rd], [0])
-        player2.update_player([player1.rating], [player1.rd], [1])
+    rePlayer1 = rePlayer(player1.id, player1.Rating, player1.Deviation, player1.Volatility)
+    rePlayer2 = rePlayer(player2.id, player2.Rating, player2.Deviation, player2.Volatility)
+
+    if matchup.PlayerOne.id == matchup.Winner.id:
+        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [1])
+        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [0])
+    elif matchup.PlayerTwo.id == matchup.Winner.id:
+        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [0])
+        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [1])
     
+    player1.Rating = rePlayer1.rating
+    player1.Deviation = rePlayer1.rd
+    player1.Volatility = rePlayer1.vol
+
+    player2.Rating = rePlayer2.rating
+    player2.Deviation = rePlayer2.rd
+    player2.Volatility = rePlayer2.vol
+
     player1.save()
     player2.save()
