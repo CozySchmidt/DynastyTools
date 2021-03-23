@@ -8,7 +8,6 @@ from .rankingsEngine import rePlayer
 
 
 def Index(request):
-    PopulateDatabase()
     nextMatchup = GetNextMatchup()
     template = loader.get_template("index.html")
     context = {'nextMatchup': nextMatchup}
@@ -35,12 +34,15 @@ def PostMatchup(request):
 
 
 def GetNextMatchup():
-    players = PlayerModel.objects.order_by('?')[:2]
+    players = PlayerModel.objects.order_by('Rating')
+    startIndex = random.randrange(0, players.count() - 15)
+    offset = random.randrange(1,14)
+
     matchup = {
-        'PlayerOneID': players[0].id,
-        'PlayerOneName': players[0].Name,
-        'PlayerTwoID': players[1].id,
-        'PlayerTwoName': players[1].Name,
+        'PlayerOneID': players[startIndex].id,
+        'PlayerOneName': players[startIndex].Name,
+        'PlayerTwoID': players[startIndex+offset].id,
+        'PlayerTwoName': players[startIndex+offset].Name,
     }
     return matchup
 
@@ -72,83 +74,3 @@ def EvaluateMatchup(matchup):
 
     player1.save()
     player2.save()
-
-
-def PopulateDatabase():
-
-    ghettoArray = [
-        'Christian McCaffrey',
-        'Saquon Barkley',
-        'Dalvin Cook',
-        'Jonathan Taylor',
-        'Alvin Kamara',
-        'Nick Chubb',
-        'Derrick Henry',
-        "D'Andre Swift",
-        'Aaron Jones',
-        'Ezekiel Elliott',
-        'J.K. Dobbins',
-        "Cam Akers",
-        "Miles Sanders",
-        "Antonio Gibson",
-        "Josh Jacobs",
-        "Austin Ekeler",
-        "Clyde Edwards-Helaire",
-        "Joe Mixon",
-        "James Robinson",
-        "David Montgomery",
-        "Kareem Hunt",
-        "Ronald Jones II",
-        "Chris Carson",
-        "Melvin Gordon III",
-        "Kenyan Drake",
-        "Najee Harris",
-        "Damien Harris",
-        "AJ Dillon",
-        "Travis Etienne",
-        "Leonard Fournette",
-        "Raheem Mostert",
-        "Myles Gaskin",
-        "David Johnson",
-        "Chase Edmonds",
-        "James Conner",
-        "Zack Moss",
-        "Devin Singletary",
-        "Tony Pollard",
-        "Nyheim Hines",
-        "Tarik Cohen",
-        "Alexander Mattison",
-        "Darrell Henderson",
-        "Phillip Lindsay",
-        "Gus Edwards",
-        "J.D. McKissic",
-        "Kenny Gainwell",
-        "Javonte Williams",
-        "Rashaad Penny",
-        "Todd Gurley II",
-        "Jamaal Williams",
-        "Ke'Shawn Vaughn",
-        "James White",
-        "Latavius Murray",
-        "Jeff Wilson Jr.",
-        "Le'Veon Bell",
-        "Kerryon Johnson",
-        "Chuba Hubbard",
-        "Benny Snell Jr.",
-        "Joshua Kelley",
-        "Anthony McFarland Jr.",
-        "Wayne Gallman",
-        "Mike Davis",
-        "Duke Johnson Jr.",
-        "La'Mical Perine",
-        "Darrynton Evans",
-        "Boston Scott",
-        "Michael Carter",
-        "Justin Jackson",
-        "Giovani Bernard",
-        "DeeJay Dallas",
-    ]
-    for player in ghettoArray:
-        if not PlayerModel.objects.filter(Name=player).exists():
-            newPlayer = PlayerModel(Name=player, Position="RB")
-            newPlayer.save()
