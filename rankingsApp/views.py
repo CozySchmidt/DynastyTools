@@ -75,7 +75,7 @@ def EvaluateMatchup(matchup):
 
 
 def PopulateDatabase():
-    with open('players.txt') as file:
+    with open('./players.txt') as file:
         lines = [line.rstrip() for line in file]
 
         for l in lines:
