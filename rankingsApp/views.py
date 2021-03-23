@@ -149,6 +149,6 @@ def PopulateDatabase():
         "DeeJay Dallas",
     ]
     for player in ghettoArray:
-        if not PlayerModel.objects.filter(name=player).exists():
+        if not PlayerModel.objects.filter(Name=player).exists():
             newPlayer = PlayerModel(Name=player, Position="RB")
             newPlayer.save()
