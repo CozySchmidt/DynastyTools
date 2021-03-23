@@ -20,7 +20,7 @@ class PlayerModel(models.Model):
         return self.Name
 
 
-class MatchupsModel(models.Model):
+class MatchupModel(models.Model):
     PlayerOne = models.ForeignKey(PlayerModel, related_name='PlayerOne', on_delete=models.CASCADE)
     PlayerTwo = models.ForeignKey(PlayerModel, related_name='PlayerTwo', on_delete=models.CASCADE)
     Winner = models.ForeignKey(PlayerModel, related_name='Winner', on_delete=models.CASCADE)

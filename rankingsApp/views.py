@@ -1,19 +1,25 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import PlayerModel, MatchupsModel
+from .models import PlayerModel, MatchupModel
 import random
 from django.template import loader
 from django.core import serializers
 from .rankingsEngine import rePlayer
+from enum import Enum
 
+class PositionEnum(Enum):
+    ALL = 1
+    QB = 2
+    RB = 3
+    WR = 4
+    TE = 5
 
 def Index(request):
-    nextMatchup = GetNextMatchup()
+    nextMatchup = GetNextMatchup("RB")
     template = loader.get_template("index.html")
     context = {'nextMatchup': nextMatchup}
     return render(request, 'index.html', context)
     
-
 
 def PostMatchup(request):
     if request.is_ajax() and request.method == "POST":
@@ -21,20 +27,30 @@ def PostMatchup(request):
         PlayerOne = PlayerModel.objects.get(id=request.POST.get("player1"))
         PlayerTwo = PlayerModel.objects.get(id=request.POST.get("player2"))
         Winner = PlayerModel.objects.get(id=request.POST.get("winner"))
+        position = PlayerModel.objects.filter(Position=request.POST.get("position"))
 
-        matchup = MatchupsModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
+        matchup = MatchupModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
         matchup.save()
 
         EvaluateMatchup(matchup)
 
-        nextMatchup = GetNextMatchup()
+        nextMatchup = GetNextMatchup(position)
+
         return JsonResponse({"nextMatchup": nextMatchup}, status=200)
     return JsonResponse({"error"}, status=400)
 
 
+def PostRankings(request):
+    if request.is_ajax() and request.method =="POST":
+        print("PostRankings")
+        playerNamesList = PlayerModel.objects.values_list('Name', flat=True)
+        return JsonResponse({"playerList": playerNamesList}, status=200)
+    return JsonResponse({"error"}, status=400)
 
-def GetNextMatchup():
-    players = PlayerModel.objects.order_by('?')[:2]
+
+def GetNextMatchup(position):
+    #get two players who are closeish in rating
+    players = ChoosePlayers(position)
     matchup = {
         'PlayerOneID': players[0].id,
         'PlayerOneName': players[0].Name,
@@ -43,6 +59,14 @@ def GetNextMatchup():
     }
     return matchup
 
+def ChoosePlayers(position):
+    return PlayerModel.objects.order_by('?')[:2]
+
+
+
+#returns all players of the positon
+def getPosition(position):
+    return PlayerModel.objects.filter(Position=position)
 
 def EvaluateMatchup(matchup):
     if matchup.PlayerOne == None or matchup.PlayerTwo == None or matchup.Winner == None:
