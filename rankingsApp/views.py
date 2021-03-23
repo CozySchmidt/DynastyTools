@@ -8,6 +8,7 @@ from .rankingsEngine import rePlayer
 
 
 def Index(request):
+    PopulateDatabase()
     nextMatchup = GetNextMatchup()
     template = loader.get_template("index.html")
     context = {'nextMatchup': nextMatchup}
@@ -71,3 +72,13 @@ def EvaluateMatchup(matchup):
 
     player1.save()
     player2.save()
+
+
+def PopulateDatabase():
+    with open('players.txt') as file:
+        lines = [line.rstrip() for line in file]
+
+        for l in lines:
+            if not PlayerModel.objects.filter(name=l).exists():
+                newPlayer = PlayerModel(Name=l, Position="RB")
+                newPlayer.save()
