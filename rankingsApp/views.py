@@ -75,10 +75,80 @@ def EvaluateMatchup(matchup):
 
 
 def PopulateDatabase():
-    with open('./players.txt') as file:
-        lines = [line.rstrip() for line in file]
 
-        for l in lines:
-            if not PlayerModel.objects.filter(name=l).exists():
-                newPlayer = PlayerModel(Name=l, Position="RB")
-                newPlayer.save()
+    ghettoArray = [
+        'Christian McCaffrey',
+        'Saquon Barkley',
+        'Dalvin Cook',
+        'Jonathan Taylor',
+        'Alvin Kamara',
+        'Nick Chubb',
+        'Derrick Henry',
+        "D'Andre Swift",
+        'Aaron Jones',
+        'Ezekiel Elliott',
+        'J.K. Dobbins',
+        "Cam Akers",
+        "Miles Sanders",
+        "Antonio Gibson",
+        "Josh Jacobs",
+        "Austin Ekeler",
+        "Clyde Edwards-Helaire",
+        "Joe Mixon",
+        "James Robinson",
+        "David Montgomery",
+        "Kareem Hunt",
+        "Ronald Jones II",
+        "Chris Carson",
+        "Melvin Gordon III",
+        "Kenyan Drake",
+        "Najee Harris",
+        "Damien Harris",
+        "AJ Dillon",
+        "Travis Etienne",
+        "Leonard Fournette",
+        "Raheem Mostert",
+        "Myles Gaskin",
+        "David Johnson",
+        "Chase Edmonds",
+        "James Conner",
+        "Zack Moss",
+        "Devin Singletary",
+        "Tony Pollard",
+        "Nyheim Hines",
+        "Tarik Cohen",
+        "Alexander Mattison",
+        "Darrell Henderson",
+        "Phillip Lindsay",
+        "Gus Edwards",
+        "J.D. McKissic",
+        "Kenny Gainwell",
+        "Javonte Williams",
+        "Rashaad Penny",
+        "Todd Gurley II",
+        "Jamaal Williams",
+        "Ke'Shawn Vaughn",
+        "James White",
+        "Latavius Murray",
+        "Jeff Wilson Jr.",
+        "Le'Veon Bell",
+        "Kerryon Johnson",
+        "Chuba Hubbard",
+        "Benny Snell Jr.",
+        "Joshua Kelley",
+        "Anthony McFarland Jr.",
+        "Wayne Gallman",
+        "Mike Davis",
+        "Duke Johnson Jr.",
+        "La'Mical Perine",
+        "Darrynton Evans",
+        "Boston Scott",
+        "Michael Carter",
+        "Justin Jackson",
+        "Giovani Bernard",
+        "DeeJay Dallas",
+    ]
+    for player in ghettoArray:
+        if not PlayerModel.objects.filter(name=player).exists():
+            newPlayer = PlayerModel(Name=player, Position="RB")
+            newPlayer.save()
