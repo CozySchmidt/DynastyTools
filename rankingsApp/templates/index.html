@@ -33,8 +33,8 @@
 
         
         {% if rankingsList %}
+        <ol>
           <table style="width:300px">
-            <ol>
               <tr>
                 <th>Player</th>
                 <th>Rating</th>
@@ -48,9 +48,9 @@
                     {% endif %}
                 {% empty %}
                     <li>Sorry, no players in this list.</li>
-                {% endfor %}
-            </ol>
-          </table>   
+                {% endfor %}    
+          </table>
+        </ol>   
         {% endif %}
           
 

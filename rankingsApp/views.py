@@ -28,7 +28,7 @@ def PostMatchup(request):
         PlayerOne = PlayerModel.objects.get(id=request.POST.get("player1"))
         PlayerTwo = PlayerModel.objects.get(id=request.POST.get("player2"))
         Winner = PlayerModel.objects.get(id=request.POST.get("winner"))
-        position = PlayerModel.objects.filter(Position=request.POST.get("position"))
+        position = request.POST.get("position")
 
         matchup = MatchupModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
         matchup.save()
