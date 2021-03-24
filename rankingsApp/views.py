@@ -6,6 +6,7 @@ from django.template import loader
 from django.core import serializers
 from .rankingsEngine import rePlayer
 from enum import Enum
+import math
 
 class PositionEnum(Enum):
     ALL = 1
@@ -42,8 +43,9 @@ def PostMatchup(request):
 
 
 def GetNextMatchup(position):
-    players = PlayerModel.objects.filter(Position=position).order_by('Rating')
-    startIndex = random.randrange(0, players.count() - 10)
+    players = PlayerModel.objects.filter(Position=position).order_by('-Rating')
+    maxNum = players.count() - 10
+    startIndex = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + maxNum))
     offset = random.randrange(1,10)
 
     matchup = {
@@ -54,15 +56,9 @@ def GetNextMatchup(position):
     }
     return matchup
 
-def ChoosePlayers(position):
-    return PlayerModel.objects.order_by('?')[:2]
-
 def GetRankings():
     return PlayerModel.objects.order_by('-Rating')
 
-#returns all players of the positon
-def getPosition(position):
-    return PlayerModel.objects.filter(Position=position)
 
 def EvaluateMatchup(matchup):
     if matchup.PlayerOne == None or matchup.PlayerTwo == None or matchup.Winner == None:
