@@ -48,14 +48,16 @@ def PostRankings(request):
     return JsonResponse({"error"}, status=400)
 
 
-def GetNextMatchup(position):
-    #get two players who are closeish in rating
-    players = ChoosePlayers(position)
+def GetNextMatchup():
+    players = PlayerModel.objects.order_by('Rating')
+    startIndex = random.randrange(0, players.count() - 10)
+    offset = random.randrange(1,9)
+
     matchup = {
-        'PlayerOneID': players[0].id,
-        'PlayerOneName': players[0].Name,
-        'PlayerTwoID': players[1].id,
-        'PlayerTwoName': players[1].Name,
+        'PlayerOneID': players[startIndex].id,
+        'PlayerOneName': players[startIndex].Name,
+        'PlayerTwoID': players[startIndex+offset].id,
+        'PlayerTwoName': players[startIndex+offset].Name,
     }
     return matchup
 
