@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'rankingsProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2/',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dde6e8onqr4ul6',
         'USER': 'yjeuioqhpbcemx',
         'PASSWORD': '89bf1e716fb4987b2523f4a0e7606a12dfde232da9aadc500231f5f3cd25b21c',

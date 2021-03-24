@@ -16,8 +16,9 @@ class PositionEnum(Enum):
 
 def Index(request):
     nextMatchup = GetNextMatchup("RB")
+    rankingsList = GetRankings()
     template = loader.get_template("index.html")
-    context = {'nextMatchup': nextMatchup}
+    context = {'nextMatchup': nextMatchup, 'rankingsList': rankingsList}
     return render(request, 'index.html', context)
     
 
@@ -40,18 +41,10 @@ def PostMatchup(request):
     return JsonResponse({"error"}, status=400)
 
 
-def PostRankings(request):
-    if request.is_ajax() and request.method =="POST":
-        print("PostRankings")
-        playerNamesList = PlayerModel.objects.values_list('Name', flat=True)
-        return JsonResponse({"playerList": playerNamesList}, status=200)
-    return JsonResponse({"error"}, status=400)
-
-
-def GetNextMatchup():
-    players = PlayerModel.objects.order_by('Rating')
+def GetNextMatchup(position):
+    players = PlayerModel.objects.filter(Position=position).order_by('Rating')
     startIndex = random.randrange(0, players.count() - 10)
-    offset = random.randrange(1,9)
+    offset = random.randrange(1,10)
 
     matchup = {
         'PlayerOneID': players[startIndex].id,
@@ -64,7 +57,8 @@ def GetNextMatchup():
 def ChoosePlayers(position):
     return PlayerModel.objects.order_by('?')[:2]
 
-
+def GetRankings():
+    return PlayerModel.objects.order_by('-Rating')
 
 #returns all players of the positon
 def getPosition(position):

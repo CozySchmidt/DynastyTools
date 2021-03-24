@@ -14,7 +14,7 @@
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
           <div class="inner">
-            <h3 class="masthead-brand">Cover</h3>
+            <h3 class="masthead-brand">Matchup:</h3>
             <nav class="nav nav-masthead justify-content-center">
             </nav>
           </div>
@@ -28,8 +28,31 @@
                     <button class="player-button" type="submit" id="player-two"  value="{{ nextMatchup.PlayerTwoID }}">{{ nextMatchup.PlayerTwoName }}</button>
                 </form>
             </main>
-        {% else %}
         {% endif %}
+        
+
+        
+        {% if rankingsList %}
+          <table style="width:300px">
+            <ol>
+              <tr>
+                <th>Player</th>
+                <th>Rating</th>
+              </tr>
+                {% for player in rankingsList %}
+                    {% if player.Position == "RB" %}
+                      <tr>
+                        <td><li>{{ player.Name }}</li></td>
+                        <td>{{ player.Rating|floatformat:"0" }}</td> 
+                      </tr>
+                    {% endif %}
+                {% empty %}
+                    <li>Sorry, no players in this list.</li>
+                {% endfor %}
+            </ol>
+          </table>   
+        {% endif %}
+          
 
         <footer class="mastfoot mt-auto">
         </footer>
@@ -40,11 +63,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
-
-        function SetMatchupForm()
-        {
-
-        }
 
         $(".player-button").click(function(event){
             event.preventDefault();
@@ -72,6 +90,7 @@
                 }  
             })
         });
+
     </script>
 </body>
 </html>
