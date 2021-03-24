@@ -35,8 +35,8 @@ def PostMatchup(request):
 
 def GetNextMatchup():
     players = PlayerModel.objects.order_by('Rating')
-    startIndex = random.randrange(0, players.count() - 15)
-    offset = random.randrange(1,14)
+    startIndex = random.randrange(0, players.count() - 10)
+    offset = random.randrange(1,9)
 
     matchup = {
         'PlayerOneID': players[startIndex].id,
