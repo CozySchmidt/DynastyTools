@@ -9,6 +9,9 @@ from enum import Enum
 import math
 from django.views import View
 import io,csv
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
 
 
 class IndexView(View):
@@ -71,7 +74,7 @@ class AdminView(View):
 
         return JsonResponse(returnmsg)
 
-
+@api_view(["POST"])
 def GetNextMatchup(position):
     if PlayerModel.objects.filter(Position=position).count() > 11:
         players = PlayerModel.objects.filter(Position=position).order_by('-Rating', 'Name')
@@ -85,7 +88,7 @@ def GetNextMatchup(position):
             'PlayerTwoID': players[startIndex+offset].id,
             'PlayerTwoName': players[startIndex+offset].Name,
         }
-        return matchup
+        return JsonResponse(matchup)
     else:
         matchup = {
             'PlayerOneID': -1,
@@ -93,7 +96,7 @@ def GetNextMatchup(position):
             'PlayerTwoID': -1,
             'PlayerTwoName': "Unavailable",
         }
-        return matchup
+        return JsonResponse(matchup)
 
 
 def GetRankings():
