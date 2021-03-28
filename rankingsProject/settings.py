@@ -28,7 +28,7 @@ SECRET_KEY = "NOT_SECRET"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'consensus-rankings.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'consensus-rankings.herokuapp.com', 'consensusrankings.com', 'www.consensusrankings.com']
 
 
 # Application definition
@@ -83,14 +83,16 @@ WSGI_APPLICATION = 'rankingsProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dde6e8onqr4ul6',
-        'USER': 'yjeuioqhpbcemx',
-        'PASSWORD': '89bf1e716fb4987b2523f4a0e7606a12dfde232da9aadc500231f5f3cd25b21c',
-        'HOST': 'ec2-54-166-242-77.compute-1.amazonaws.com',
+        'NAME': 'RankingsTestDB',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 LOGGING = {
     'version': 1,
@@ -108,9 +110,6 @@ LOGGING = {
     },
 }
 
-
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

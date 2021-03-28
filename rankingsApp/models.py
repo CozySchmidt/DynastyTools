@@ -6,11 +6,12 @@ from django.core.exceptions import ObjectDoesNotExist
 RATING_DEFAULT = 1500
 DEVIATION_DEFUALT = 500
 VOLATILITY_DEFAULT = .1
-
+TEAM_DEFAULT = "N/A"
 
 # Create your models here.
 class PlayerModel(models.Model):
     Name = models.CharField(max_length=255)
+    Team = models.CharField(max_length=5, default=TEAM_DEFAULT)
     Position = models.CharField(max_length=3)
     Rating = models.FloatField(default=RATING_DEFAULT)
     Deviation = models.FloatField(default=DEVIATION_DEFUALT)

@@ -19,38 +19,145 @@
             </nav>
           </div>
         </header>
-
-        {% if nextMatchup %}
-            <main role="main" class="inner cover">
-                <form id="matchup-form" method="post">
-                    {% csrf_token %}
-                    <button class="player-button" type="submit" id="player-one" value="{{ nextMatchup.PlayerOneID }}">{{ nextMatchup.PlayerOneName }}</button>
-                    <button class="player-button" type="submit" id="player-two"  value="{{ nextMatchup.PlayerTwoID }}">{{ nextMatchup.PlayerTwoName }}</button>
-                </form>
-            </main>
-        {% endif %}
-        
-
         
         {% if rankingsList %}
-        <ol>
-          <table style="width:300px">
-              <tr>
-                <th>Player</th>
-                <th>Rating</th>
-              </tr>
-                {% for player in rankingsList %}
-                    {% if player.Position == "RB" %}
-                      <tr>
-                        <td><li>{{ player.Name }}</li></td>
-                        <td>{{ player.Rating|floatformat:"0" }}</td> 
-                      </tr>
-                    {% endif %}
-                {% empty %}
-                    <li>Sorry, no players in this list.</li>
-                {% endfor %}    
+          <table style="width:1200px"> 
+            {% if QBMatchup %}
+            <tr>
+              <td>
+                <main role="main" class="inner cover">
+                    <form id="qb-matchup-form" method="post">
+                        {% csrf_token %}
+                        <button class="qb-button" type="submit" id="qb-one" value="{{ QBMatchup.PlayerOneID }}">{{ QBMatchup.PlayerOneName }}</button>
+                        <button class="qb-button" type="submit" id="qb-two"  value="{{ QBMatchup.PlayerTwoID }}">{{ QBMatchup.PlayerTwoName }}</button>
+                    </form>
+                </main>
+            {% endif %}
+              </td>
+              <td>
+                {% if RBMatchup %}
+                <main role="main" class="inner cover">
+                    <form id="rb-matchup-form" method="post">
+                        {% csrf_token %}
+                        <button class="rb-button" type="submit" id="rb-one" value="{{ RBMatchup.PlayerOneID }}">{{ RBMatchup.PlayerOneName }}</button>
+                        <button class="rb-button" type="submit" id="rb-two"  value="{{ RBMatchup.PlayerTwoID }}">{{ RBMatchup.PlayerTwoName }}</button>
+                    </form>
+                </main>
+            {% endif %}
+              </td>
+              <td>
+                {% if WRMatchup %}
+                <main role="main" class="inner cover">
+                    <form id="wr-matchup-form" method="post">
+                        {% csrf_token %}
+                        <button class="wr-button" type="submit" id="wr-one" value="{{ WRMatchup.PlayerOneID }}">{{ WRMatchup.PlayerOneName }}</button>
+                        <button class="wr-button" type="submit" id="wr-two"  value="{{ WRMatchup.PlayerTwoID }}">{{ WRMatchup.PlayerTwoName }}</button>
+                    </form>
+                </main>
+            {% endif %}
+              </td>
+              <td>
+                {% if TEMatchup %}
+                <main role="main" class="inner cover">
+                    <form id="te-matchup-form" method="post">
+                        {% csrf_token %}
+                        <button class="te-button" type="submit" id="te-one" value="{{ TEMatchup.PlayerOneID }}">{{ TEMatchup.PlayerOneName }}</button>
+                        <button class="te-button" type="submit" id="te-two"  value="{{ TEMatchup.PlayerTwoID }}">{{ TEMatchup.PlayerTwoName }}</button>
+                    </form>
+                </main>
+            {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>QB</th>
+              <th>RB</th>
+              <th>WR</th>
+              <th>TE</th>
+            </tr>
+            <tr>
+              <td style="vertical-align: top">
+                <ol>
+                  <table>
+                    <tr>
+                      <th>Player</th>
+                      <th>Rating</th>
+                    </tr>
+                      {% for player in rankingsList %}
+                          {% if player.Position == "QB" %}
+                            <tr>
+                              <td><li>{{ player.Name }}</li></td>
+                              <td>{{ player.Rating|floatformat:"0" }}</td> 
+                            </tr>
+                          {% endif %}
+                      {% empty %}
+                          <li>Sorry, no players in this list.</li>
+                      {% endfor %}  
+                  </table>
+                </ol> 
+              </td>
+              <td style="vertical-align: top">
+                <ol>
+                  <table>
+                    <tr>
+                      <th>Player</th>
+                      <th>Rating</th>
+                    </tr>
+                      {% for player in rankingsList %}
+                          {% if player.Position == "RB" %}
+                            <tr>
+                              <td><li>{{ player.Name }}</li></td>
+                              <td>{{ player.Rating|floatformat:"0" }}</td> 
+                            </tr>
+                          {% endif %}
+                      {% empty %}
+                          <li>Sorry, no players in this list.</li>
+                      {% endfor %}  
+                  </table>  
+                </ol>
+              </td>
+              <td style="vertical-align: top">
+                <ol>
+                  <table>
+                    <tr>
+                      <th>Player</th>
+                      <th>Rating</th>
+                    </tr>
+                      {% for player in rankingsList %}
+                          {% if player.Position == "WR" %}
+                            <tr>
+                              <td><li>{{ player.Name }}</li></td>
+                              <td>{{ player.Rating|floatformat:"0" }}</td> 
+                            </tr>
+                          {% endif %}
+                      {% empty %}
+                          <li>Sorry, no players in this list.</li>
+                      {% endfor %}  
+                  </table>  
+                </ol>
+              </td>
+              <td style="vertical-align: top">
+                <ol>
+                  <table>
+                    <tr>
+                      <th>Player</th>
+                      <th>Rating</th>
+                    </tr>
+                      {% for player in rankingsList %}
+                          {% if player.Position == "TE" %}
+                            <tr>
+                              <td><li>{{ player.Name }}</li></td>
+                              <td>{{ player.Rating|floatformat:"0" }}</td> 
+                            </tr>
+                          {% endif %}
+                      {% empty %}
+                          <li>Sorry, no players in this list.</li>
+                      {% endfor %}  
+                  </table>  
+                </ol>
+              </td>
+            </tr>
           </table>
-        </ol>   
+          
         {% endif %}
           
 
@@ -64,27 +171,104 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
 
-        $(".player-button").click(function(event){
+        $(".qb-button").click(function(event){
             event.preventDefault();
             console.log(event)
             $.ajax({
-                url: '/PostMatchup',
+                url: '',
                 type: "POST",
                 data: {
-                    player1: document.getElementById("player-one").value,
-                    player2: document.getElementById("player-two").value,
+                    player1: document.getElementById("qb-one").value,
+                    player2: document.getElementById("qb-two").value,
+                    position: "QB",
+                    winner: event.target.value,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function(json){
+                    console.log(json);
+                    document.getElementById("qb-one").value = json.nextMatchup.PlayerOneID;
+                    document.getElementById("qb-one").innerHTML = json.nextMatchup.PlayerOneName;
+                    document.getElementById("qb-two").value = json.nextMatchup.PlayerTwoID;
+                    document.getElementById("qb-two").innerHTML = json.nextMatchup.PlayerTwoName;
+                },
+                error: function() {
+                    console.log("failure is not an option");
+                }  
+            })
+        });
+
+        $(".rb-button").click(function(event){
+            event.preventDefault();
+            console.log(event)
+            $.ajax({
+                url: '',
+                type: "POST",
+                data: {
+                    player1: document.getElementById("rb-one").value,
+                    player2: document.getElementById("rb-two").value,
                     position: "RB",
                     winner: event.target.value,
                     csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success: function(json){
                     console.log(json);
-                    document.getElementById("player-one").value = json.nextMatchup.PlayerOneID;
-                    document.getElementById("player-one").innerHTML = json.nextMatchup.PlayerOneName;
-                    document.getElementById("player-two").value = json.nextMatchup.PlayerTwoID;
-                    document.getElementById("player-two").innerHTML = json.nextMatchup.PlayerTwoName;
+                    document.getElementById("rb-one").value = json.nextMatchup.PlayerOneID;
+                    document.getElementById("rb-one").innerHTML = json.nextMatchup.PlayerOneName;
+                    document.getElementById("rb-two").value = json.nextMatchup.PlayerTwoID;
+                    document.getElementById("rb-two").innerHTML = json.nextMatchup.PlayerTwoName;
                 },
+                error: function() {
+                    console.log("failure is not an option");
+                }  
+            })
+        });
 
+        $(".wr-button").click(function(event){
+            event.preventDefault();
+            console.log(event)
+            $.ajax({
+                url: '',
+                type: "POST",
+                data: {
+                    player1: document.getElementById("wr-one").value,
+                    player2: document.getElementById("wr-two").value,
+                    position: "WR",
+                    winner: event.target.value,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function(json){
+                    console.log(json);
+                    document.getElementById("wr-one").value = json.nextMatchup.PlayerOneID;
+                    document.getElementById("wr-one").innerHTML = json.nextMatchup.PlayerOneName;
+                    document.getElementById("wr-two").value = json.nextMatchup.PlayerTwoID;
+                    document.getElementById("wr-two").innerHTML = json.nextMatchup.PlayerTwoName;
+                },
+                error: function() {
+                    console.log("failure is not an option");
+                }  
+            })
+        });
+
+        $(".te-button").click(function(event){
+            event.preventDefault();
+            console.log(event)
+            $.ajax({
+                url: '',
+                type: "POST",
+                data: {
+                    player1: document.getElementById("te-one").value,
+                    player2: document.getElementById("te-two").value,
+                    position: "te",
+                    winner: event.target.value,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function(json){
+                    console.log(json);
+                    document.getElementById("te-one").value = json.nextMatchup.PlayerOneID;
+                    document.getElementById("te-one").innerHTML = json.nextMatchup.PlayerOneName;
+                    document.getElementById("te-two").value = json.nextMatchup.PlayerTwoID;
+                    document.getElementById("te-two").innerHTML = json.nextMatchup.PlayerTwoName;
+                },
                 error: function() {
                     console.log("failure is not an option");
                 }  

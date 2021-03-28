@@ -7,54 +7,94 @@ from django.core import serializers
 from .rankingsEngine import rePlayer
 from enum import Enum
 import math
+from django.views import View
+import io,csv
 
-class PositionEnum(Enum):
-    ALL = 1
-    QB = 2
-    RB = 3
-    WR = 4
-    TE = 5
 
-def Index(request):
-    nextMatchup = GetNextMatchup("RB")
-    rankingsList = GetRankings()
-    template = loader.get_template("index.html")
-    context = {'nextMatchup': nextMatchup, 'rankingsList': rankingsList}
-    return render(request, 'index.html', context)
-    
+class IndexView(View):
+    def get(self, request):
+        QBMatchup = GetNextMatchup("QB")
+        RBMatchup = GetNextMatchup("RB")
+        WRMatchup = GetNextMatchup("WR")
+        TEMatchup = GetNextMatchup("TE")
 
-def PostMatchup(request):
-    if request.is_ajax() and request.method == "POST":
+        rankingsList = GetRankings()
+        template = loader.get_template("index.html")
+        context = {
+            'QBMatchup': QBMatchup, 
+            'RBMatchup': RBMatchup, 
+            'WRMatchup': WRMatchup, 
+            'TEMatchup': TEMatchup, 
+            'rankingsList': rankingsList
+        }
+        return render(request, 'index.html', context)
+
+    def post(self, request):
         print(request.POST)
         PlayerOne = PlayerModel.objects.get(id=request.POST.get("player1"))
         PlayerTwo = PlayerModel.objects.get(id=request.POST.get("player2"))
         Winner = PlayerModel.objects.get(id=request.POST.get("winner"))
         position = request.POST.get("position")
-
         matchup = MatchupModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
         matchup.save()
-
         EvaluateMatchup(matchup)
-
         nextMatchup = GetNextMatchup(position)
-
         return JsonResponse({"nextMatchup": nextMatchup}, status=200)
-    return JsonResponse({"error"}, status=400)
+
+
+class AdminView(View):
+    def get(self, request):
+        if 'isAdmin' not in request.session or request.session['isAdmin'] is False:
+            return render(request, 'admin.html')
+        else:
+            return render(request, 'admin.html')
+
+    def post(self, request):
+        playerFile = io.TextIOWrapper(request.FILES['players'].file)
+        playerDict = csv.DictReader(playerFile)
+        playerList = list(playerDict)
+        objs = [
+            PlayerModel(
+                Name = row['Name'],
+                Team = row['Team'],
+                Position = row['Position']
+            )
+            for row in playerList
+        ]
+        try:
+            msg = PlayerModel.objects.bulk_create(objs)
+            returnmsg = {"status_code": 200}
+            print('import successful')
+        except Exception as e:
+            print('error importing: ', e)
+            returnmsg = {'status_code': 500}
+
+        return JsonResponse(returnmsg)
 
 
 def GetNextMatchup(position):
-    players = PlayerModel.objects.filter(Position=position).order_by('-Rating')
-    maxNum = players.count() - 10
-    startIndex = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + maxNum))
-    offset = random.randrange(1,10)
+    if PlayerModel.objects.filter(Position=position).count() > 11:
+        players = PlayerModel.objects.filter(Position=position).order_by('-Rating', 'Name')
+        maxNum = players.count() - 10
+        startIndex = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + maxNum))
+        offset = random.randrange(1,10)
+        print(startIndex, " ", offset)
+        matchup = {
+            'PlayerOneID': players[startIndex].id,
+            'PlayerOneName': players[startIndex].Name,
+            'PlayerTwoID': players[startIndex+offset].id,
+            'PlayerTwoName': players[startIndex+offset].Name,
+        }
+        return matchup
+    else:
+        matchup = {
+            'PlayerOneID': -1,
+            'PlayerOneName': "Unavailable",
+            'PlayerTwoID': -1,
+            'PlayerTwoName': "Unavailable",
+        }
+        return matchup
 
-    matchup = {
-        'PlayerOneID': players[startIndex].id,
-        'PlayerOneName': players[startIndex].Name,
-        'PlayerTwoID': players[startIndex+offset].id,
-        'PlayerTwoName': players[startIndex+offset].Name,
-    }
-    return matchup
 
 def GetRankings():
     return PlayerModel.objects.order_by('-Rating')

@@ -1,8 +1,9 @@
+from django.contrib.auth import views
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path('', views.Index, name='Index'),
-    path('PostMatchup', views.PostMatchup, name='PostMatchup')
+    path('', IndexView.as_view(), name='index'),
+    path('admin/', AdminView.as_view(), name='admin')
 ]
 
