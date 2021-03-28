@@ -6,6 +6,6 @@ from rankingsApp import views
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('admin/', AdminView.as_view(), name='admin'),
-    re_path(r'^api/nextmatchup/$', views.GetNextMatchup)
+    re_path(r'^api/nextmatchup$', views.GetNextMatchup)
 ]
 

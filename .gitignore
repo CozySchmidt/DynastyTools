@@ -1,2 +1,4 @@
 __pycache__/
 *.py[cod]
+rankingsProject/__pycache__/*
+rankingsApp/__pycache__/*

@@ -28,9 +28,16 @@ SECRET_KEY = "NOT_SECRET"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'consensus-rankings.herokuapp.com', 'consensusrankings.com', 'www.consensusrankings.com']
-
-
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'localhost', 
+    '0.0.0.0', 
+    'consensus-rankings.herokuapp.com', 
+    'consensusrankings.com', 
+    'www.consensusrankings.com'
+]
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,14 +65,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
-CORS_ORIGIN_REGEX_WHITELIST = [
-    'http://localhost:300',
-]
+
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

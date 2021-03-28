@@ -9,7 +9,7 @@ class Vote extends Component {
     render() {
         return (
             <div id="vote-container">
-                <Get url={NEXT_MATCHUP} params={{position: "QB"}}>
+                <Post url={NEXT_MATCHUP} params={{position: "QB"}}>
                     {(error, response, isLoading, makeRequest, axios) => {
                         if(error) {
                             return (
@@ -29,7 +29,7 @@ class Vote extends Component {
 
                         return <p>Default Message</p>
                     }}
-                </Get>
+                </Post>
                 
             </div>
         );

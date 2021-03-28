@@ -74,10 +74,11 @@ class AdminView(View):
 
         return JsonResponse(returnmsg)
 
-@api_view(["POST"])
-def GetNextMatchup(position):
-    if PlayerModel.objects.filter(Position=position).count() > 11:
-        players = PlayerModel.objects.filter(Position=position).order_by('-Rating', 'Name')
+@api_view(["POST", "GET"])
+def GetNextMatchup(request):
+    print(request.data)
+    if PlayerModel.objects.filter(Position="QB").count() > 11:
+        players = PlayerModel.objects.filter(Position="QB").order_by('-Rating', 'Name')
         maxNum = players.count() - 10
         startIndex = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + maxNum))
         offset = random.randrange(1,10)
