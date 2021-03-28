@@ -1,0 +1,1 @@
+export const NEXT_MATCHUP = 'http://localhost:8000/api/nextmatchup';
