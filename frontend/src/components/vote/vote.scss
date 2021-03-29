@@ -1,0 +1,39 @@
+#vote-container {
+    color: white;
+    width: 100%;
+    height: 100%;
+
+    #matchup-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+
+        #vote-button-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            margin: auto;
+            justify-content: center;
+
+            .vote-button {
+                margin: 25px;
+                flex: 0 0 275px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    #matchup-loader {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+

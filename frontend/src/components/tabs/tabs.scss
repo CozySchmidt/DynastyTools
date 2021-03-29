@@ -1,3 +1,14 @@
+
+#mat-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .tab-panel {
+        flex: 1;
+    }
+}
+
 #tabs-toolbar {
     flex-wrap: wrap;
     align-items: flex-end;
