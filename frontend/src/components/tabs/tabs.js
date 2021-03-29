@@ -36,7 +36,7 @@ class Nav extends Component {
                     </Toolbar>
                 
                 </AppBar>
-                <div role="tabpanel" hidden={this.state.value !== 0}>
+                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== 0}>
                     <Vote></Vote>
                 </div>
                 
