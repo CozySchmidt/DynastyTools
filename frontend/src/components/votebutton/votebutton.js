@@ -1,44 +1,58 @@
 import React, { Component } from "react";
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import Person from '@material-ui/icons/Person';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import './votebutton.scss';
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from 'prop-types';
 import ButtonBase from '@material-ui/core/ButtonBase';
-
-const themeStyles = theme => ({
-    rippleVisible: {
-        opacity: 0.1,
-        color: '#6dfc35'
-    }
-})
+import Slide from '@material-ui/core/Slide';
 
 class VoteButton extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            playerData: this.props.player,
+            animate: false
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.player !== this.props.player) {
+            this.setState({animate: true})
+        }
+    }
+
+    onAnimationEnd = () => {
+        this.setState({animate: false, playerData: this.props.player})
+    }
+
     render() {
-        const { classes } = this.props;
         
         return (
             <ButtonBase 
-                    TouchRippleProps={{ classes: {root: classes.rippleVisible}}} 
-                    className={`vote-button-container ${this.props.className}`}
-                    onClick={this.props.onClick}
+                className={`vote-button-container`}
+                onClick={this.state.animate ? null : this.props.onClick}
             >
-                <Typography className={`player-name`} variant="h6">{this.props.player.Name ? this.props.player.Name : 'Player Name Unkown'}</Typography>
-                <div className="player-pic-wrapper">
-                    <Person className="player-pic"></Person>
-                </div>
-                <div className={`thumb-icon-wrapper`}>
-                    <ThumbUp className="thumb-icon"></ThumbUp>
-                </div>
+                <Slide 
+                    direction={this.state.animate ? "up" : "down"}
+                    in={!this.state.animate} 
+                    onExited={this.onAnimationEnd}
+                    timeout={{enter: 400, exit: 300}}
+                >
+                    <div className="vote-button-contents">
+                        <Typography className={`player-name`} variant="h6">{this.state.playerData.Name ? this.state.playerData.Name : 'Player Name Unkown'}</Typography>
+                        <div className="player-pic-wrapper">
+                            <Person className="player-pic"></Person>
+                        </div>
+                        <div className={`thumb-icon-wrapper`}>
+                            <ThumbUp className="thumb-icon"></ThumbUp>
+                        </div>
+                    </div>
+                </Slide>
             </ButtonBase>
         )
     }
 }
 
-VoteButton.propTypes = {
-    classes: PropTypes.object.isRequired
-}
-
-export default withStyles(themeStyles)(VoteButton);
+export default VoteButton;
