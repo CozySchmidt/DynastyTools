@@ -5,16 +5,27 @@
 
     #matchup-container {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100%;
 
+        #vote-options {
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+            width: 50%;
+            padding: 25px;
+            margin-top: auto;
+        }
+
         #vote-button-container {
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            margin: auto;
+            margin-bottom: auto;
             justify-content: center;
 
             .vote-button {

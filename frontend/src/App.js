@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
+import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';  
 import Nav from './components/tabs/tabs'
 import './App.css';
 
