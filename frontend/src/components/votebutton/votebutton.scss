@@ -1,16 +1,31 @@
 .vote-button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    width: 100%;
     border-radius: 5px !important;
-    background-color: rgba($color: #000000, $alpha: 0.15) !important;
-    box-shadow: inset 0px 0px 8px rgba($color: #000000, $alpha: 0.25);
+    background-color: rgba($color: #fff, $alpha: 0.15) !important;
+    box-shadow: 0px 0px 8px rgba($color: #000000, $alpha: 0.25);
     padding: 15px !important;
-    transition: all 0.15s linear;
+    transition: all 0.25s ease-in-out;
+    overflow: hidden;
 
     &:hover {
+        transform: translateY(-15px) scale(1.01);
+        box-shadow: 0px 0px 12px rgba($color: #000000, $alpha: 0.3);
         cursor: pointer;
-        box-shadow: inset 0px 0px 8px rgba($color: #6dfc35, $alpha: 0.25);
+
+        .thumb-icon-wrapper {
+            .thumb-icon {
+                color: #79d853;
+            }
+        }
+    }
+
+    .vote-button-contents {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .player-name {
@@ -38,6 +53,7 @@
         height: 50px;
 
         .thumb-icon {
+            transition: color 0.15s linear;
             width: 100%;
             height: 100%;
         }
