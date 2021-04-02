@@ -39,6 +39,6 @@ def InsertMatchup(request):
 def GetRankings(request):
     requestedPosition = request.data.get('position')
     players = PlayerModel.objects.filter(Position=requestedPosition)
-    serializer = PlayerSerializer(players)
+    serializer = PlayerSerializer(players, many=True)
     return Response(serializer.data)
 
