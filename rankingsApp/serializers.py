@@ -15,7 +15,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class MatchupSerializer(serializers.ModelSerializer):
-    PlayerOne = PlayerSerializer(many=False, )
+    PlayerOne = PlayerSerializer(many=False)
     PlayerTwo = PlayerSerializer(many=False)
     Winner = PlayerSerializer(many=False, required=False)
     class Meta:

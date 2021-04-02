@@ -62,8 +62,9 @@ class Vote extends Component {
 
     nextMatchUp = () => {
         let error, response;
-
-        axios.post(NEXT_MATCHUP, {position: this.state.position}).then(res => {
+        const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+        console.log(csrf_token)
+        axios.post(NEXT_MATCHUP, {position: this.state.position}, {headers:{"X-CSRFToken": csrf_token}}).then(res => {
             response = res;
         }).catch(err => {
             error = err;

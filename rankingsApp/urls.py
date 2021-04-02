@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/nextmatchup$', views.GetNextMatchup),
     re_path(r'^api/insertmatchup$', views.InsertMatchup),
-    re_path(r'^api/getrankings$', views.GetRankings)
+    re_path(r'^api/getrankings$', views.GetRankings),
+    re_path(r'^', views.ReactAppView.as_view())
 ]
 

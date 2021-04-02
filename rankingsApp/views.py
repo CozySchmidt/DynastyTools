@@ -13,18 +13,38 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .serializers import *
+import os
+import logging
+from django.views.generic import View
+from django.conf import settings
+
+
+class ReactAppView(View):
+    index_file_path = os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')
+    def get(self, request):
+        try:
+            with open(self.index_file_path) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            logging.exception('Production build of app not found')
+            return HttpResponse(
+                """
+                This URL is only used when you have built the production
+                version of the app. Visit http://localhost:3000/ instead after
+                running `npm start` on the frontend/ directory
+                """,
+                status=501,
+            )
 
 
 @api_view(["POST"])
 def GetNextMatchup(request):
-    requestedPosition = request.data.get('position')
-    players = PlayerModel.objects.filter(Position=requestedPosition)
+    players = PlayerModel.objects.filter(Position=request.data.get('position'))
     index1 = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + players.count() - 10))
     index2 = index1 + random.randrange(1,10)
     nextMatchup = MatchupModel(PlayerOne=players[index1], PlayerTwo=players[index2])
     serializer = MatchupSerializer(nextMatchup)
     return Response(serializer.data)
-
 
 @api_view(["POST"])
 def InsertMatchup(request):
