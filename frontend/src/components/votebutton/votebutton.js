@@ -31,7 +31,7 @@ class VoteButton extends Component {
         
         return (
             <ButtonBase 
-                className={`vote-button-container`}
+                className={`vote-button-container ${this.state.playerData.Team}`}
                 onClick={this.state.animate ? null : this.props.onClick}
             >
                 <Slide 
@@ -40,8 +40,9 @@ class VoteButton extends Component {
                     onExited={this.onAnimationEnd}
                     timeout={{enter: 400, exit: 300}}
                 >
-                    <div className="vote-button-contents">
-                        <Typography className={`player-name`} variant="h6">{this.state.playerData.Name ? this.state.playerData.Name : 'Player Name Unkown'}</Typography>
+                    <div className={`vote-button-contents`}>
+                        <Typography className={`player-name`} variant="h6">{this.state.playerData.Name ? this.state.playerData.Name : 'Name Unkown'}</Typography>
+                        <Typography className={`player-team`} variant="subtitle">{this.state.playerData.Team ? this.state.playerData.Team : 'Team Unkown'}</Typography>
                         <div className="player-pic-wrapper">
                             <Person className="player-pic"></Person>
                         </div>
