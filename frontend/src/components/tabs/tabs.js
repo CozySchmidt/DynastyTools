@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import { Toolbar, Typography } from "@material-ui/core";
 import './tabs.scss';
 import Vote from '../vote/vote';
+import Rankings from "../rankings/rankings";
 
 class Nav extends Component {
 
@@ -40,8 +41,8 @@ class Nav extends Component {
                     <Vote></Vote>
                 </div>
                 
-                <div role="tabpanel"  hidden={this.state.value !== 1}>
-                    Rankings Page Here
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
+                    <Rankings></Rankings>
                 </div> 
             </div>
         );
