@@ -9,121 +9,56 @@ from enum import Enum
 import math
 from django.views import View
 import io,csv
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from .serializers import *
+import os
+import logging
+from django.views.generic import View
+from django.conf import settings
 
 
-class IndexView(View):
+class ReactAppView(View):
+    index_file_path = os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')
     def get(self, request):
-        QBMatchup = GetNextMatchup("QB")
-        RBMatchup = GetNextMatchup("RB")
-        WRMatchup = GetNextMatchup("WR")
-        TEMatchup = GetNextMatchup("TE")
-
-        rankingsList = GetRankings()
-        template = loader.get_template("index.html")
-        context = {
-            'QBMatchup': QBMatchup, 
-            'RBMatchup': RBMatchup, 
-            'WRMatchup': WRMatchup, 
-            'TEMatchup': TEMatchup, 
-            'rankingsList': rankingsList
-        }
-        return render(request, 'index.html', context)
-
-    def post(self, request):
-        print(request.POST)
-        PlayerOne = PlayerModel.objects.get(id=request.POST.get("player1"))
-        PlayerTwo = PlayerModel.objects.get(id=request.POST.get("player2"))
-        Winner = PlayerModel.objects.get(id=request.POST.get("winner"))
-        position = request.POST.get("position")
-        matchup = MatchupModel(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
-        matchup.save()
-        EvaluateMatchup(matchup)
-        nextMatchup = GetNextMatchup(position)
-        return JsonResponse({"nextMatchup": nextMatchup}, status=200)
-
-
-class AdminView(View):
-    def get(self, request):
-        if 'isAdmin' not in request.session or request.session['isAdmin'] is False:
-            return render(request, 'admin.html')
-        else:
-            return render(request, 'admin.html')
-
-    def post(self, request):
-        playerFile = io.TextIOWrapper(request.FILES['players'].file)
-        playerDict = csv.DictReader(playerFile)
-        playerList = list(playerDict)
-        objs = [
-            PlayerModel(
-                Name = row['Name'],
-                Team = row['Team'],
-                Position = row['Position']
-            )
-            for row in playerList
-        ]
         try:
-            msg = PlayerModel.objects.bulk_create(objs)
-            returnmsg = {"status_code": 200}
-            print('import successful')
-        except Exception as e:
-            print('error importing: ', e)
-            returnmsg = {'status_code': 500}
-
-        return JsonResponse(returnmsg)
-
-
-def GetNextMatchup(position):
-    if PlayerModel.objects.filter(Position=position).count() > 11:
-        players = PlayerModel.objects.filter(Position=position).order_by('-Rating', 'Name')
-        maxNum = players.count() - 10
-        startIndex = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + maxNum))
-        offset = random.randrange(1,10)
-        print(startIndex, " ", offset)
-        matchup = {
-            'PlayerOneID': players[startIndex].id,
-            'PlayerOneName': players[startIndex].Name,
-            'PlayerTwoID': players[startIndex+offset].id,
-            'PlayerTwoName': players[startIndex+offset].Name,
-        }
-        return matchup
-    else:
-        matchup = {
-            'PlayerOneID': -1,
-            'PlayerOneName': "Unavailable",
-            'PlayerTwoID': -1,
-            'PlayerTwoName': "Unavailable",
-        }
-        return matchup
+            with open(self.index_file_path) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            logging.exception('Production build of app not found')
+            return HttpResponse(
+                """
+                This URL is only used when you have built the production
+                version of the app. Visit http://localhost:3000/ instead after
+                running `npm start` on the frontend/ directory
+                """,
+                status=501,
+            )
 
 
-def GetRankings():
-    return PlayerModel.objects.order_by('-Rating')
+@api_view(["POST"])
+def GetNextMatchup(request):
+    players = PlayerModel.objects.filter(Position=request.data.get('position'))
+    index1 = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + players.count() - 10))
+    index2 = index1 + random.randrange(1,10)
+    nextMatchup = MatchupModel(PlayerOne=players[index1], PlayerTwo=players[index2])
+    serializer = MatchupSerializer(nextMatchup)
+    return Response(serializer.data)
+
+@api_view(["POST"])
+def InsertMatchup(request):
+    serializer = MatchupSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def EvaluateMatchup(matchup):
-    if matchup.PlayerOne == None or matchup.PlayerTwo == None or matchup.Winner == None:
-        return
-    
-    player1 = PlayerModel.objects.get(id=matchup.PlayerOne.id)
-    player2 = PlayerModel.objects.get(id=matchup.PlayerTwo.id)
+@api_view(["POST", "GET"])
+def GetRankings(request):
+    requestedPosition = request.data.get('position')
+    players = PlayerModel.objects.filter(Position=requestedPosition)
+    serializer = PlayerSerializer(players, many=True)
+    return Response(serializer.data)
 
-    rePlayer1 = rePlayer(player1.id, player1.Rating, player1.Deviation, player1.Volatility)
-    rePlayer2 = rePlayer(player2.id, player2.Rating, player2.Deviation, player2.Volatility)
-
-    if matchup.PlayerOne.id == matchup.Winner.id:
-        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [1])
-        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [0])
-    elif matchup.PlayerTwo.id == matchup.Winner.id:
-        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [0])
-        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [1])
-    
-    player1.Rating = rePlayer1.rating
-    player1.Deviation = rePlayer1.rd
-    player1.Volatility = rePlayer1.vol
-
-    player2.Rating = rePlayer2.rating
-    player2.Deviation = rePlayer2.rd
-    player2.Volatility = rePlayer2.vol
-
-    player1.save()
-    player2.save()

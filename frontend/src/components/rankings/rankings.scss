@@ -1,0 +1,22 @@
+#rankings-container {
+    width: 90%;
+    margin: 50px auto;
+
+    #ranking-wrapper {
+
+        #ranking-filters {
+            display: flex;
+            flex-wrap: wrap;
+
+            .ranking-filter {
+                padding: 15px;
+            }
+        }
+
+        .rankings-table {
+            margin: 25px auto;
+            border-radius: 5px;
+        }
+    }
+}
+

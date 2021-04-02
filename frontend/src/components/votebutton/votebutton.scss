@@ -1,0 +1,319 @@
+.vote-button-container {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px !important;
+    box-shadow: 0px 0px 8px rgba($color: #000000, $alpha: 0.25);
+    padding: 15px !important;
+    transition: all 0.25s ease-in-out;
+    overflow: hidden;
+    text-shadow: 0 0 3px black;
+
+    &.ARI {
+        background-color: #97233F;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.TEN {
+        background-color: #97233F;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.KC {
+        background-color: #E31836;
+
+        .player-pic-wrapper {
+            border: 4px solid black;
+        }
+    }
+
+    &.BUF {
+        background-color: #00338D;
+
+        .player-pic-wrapper {
+            border: 4px solid #D0162F;
+        }
+    }
+
+    &.HOU {
+        background-color: #032130;
+
+        .player-pic-wrapper {
+            border: 4px solid #A71930;
+        }
+    }
+
+    &.DAL {
+        background-color: #012244;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.BAL {
+        background-color: #24135F;
+
+        .player-pic-wrapper {
+            border: 4px solid #9A7611;
+        }
+    }
+
+    &.LAC {
+        background-color: #0080C7;
+
+        .player-pic-wrapper {
+            border: 4px solid #FFC20F;
+        }
+    }
+
+    &.SEA {
+        background-color: #022144;
+
+        .player-pic-wrapper {
+            border: 4px solid #6BBB2E;
+        }
+    }
+
+    &.CIN {
+        background-color: #FB4F13;
+
+        .player-pic-wrapper {
+            border: 4px solid black;
+        }
+    }
+
+    &.GB {
+        background-color: #203732;
+
+        .player-pic-wrapper {
+            border: 4px solid #FAB515;
+        }
+    }
+
+    &.PHI {
+        background-color: #004C55;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.CLE {
+        background-color: #FF3C01;
+
+        .player-pic-wrapper {
+            border: 4px solid black;
+        }
+    }
+
+    &.LAR {
+        background-color: #003595;
+
+        .player-pic-wrapper {
+            border: 4px solid #FFD100;
+        }
+    }
+    
+    &.MIA {
+        background-color: #008E97;
+
+        .player-pic-wrapper {
+            border: 4px solid #F94E02;
+        }
+    }
+
+    &.IND {
+        background-color: #012D60;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.ATL {
+        background-color: #AD202F;
+
+        .player-pic-wrapper {
+            border: 4px solid black;
+        }
+    }
+
+    &.MIN {
+        background-color: #502583;
+
+        .player-pic-wrapper {
+            border: 4px solid #FFC62F;
+        }
+    }
+
+    &.FA {
+        background-color: #97233F;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.DET {
+        background-color: #0076B4;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.LV {
+        background-color: black;
+
+        .player-pic-wrapper {
+            border: 4px solid #A5ACAE;
+        }
+    }
+
+    &.NYG {
+        background-color: #0B2265;
+
+        .player-pic-wrapper {
+            border: 4px solid #A51A2F;
+        }
+    }
+
+    &.TB {
+        background-color: #A71930;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.NYJ {
+        background-color: #135740;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.SF {
+        background-color: #AB0001;
+
+        .player-pic-wrapper {
+            border: 4px solid #B4995E;
+        }
+    }
+
+    &.CAR {
+        background-color: #0185CA;
+
+        .player-pic-wrapper {
+            border: 4px solid black;
+        }
+    }
+
+    &.NO {
+        background-color: #D4BC8D;
+        color: white;
+
+        .player-pic-wrapper {
+            border: 4px solid white;
+        }
+    }
+
+    &.DEN {
+        background-color: #012244;
+
+        .player-pic-wrapper {
+            border: 4px solid #FB4F13;
+        }
+    }
+
+    &.NE {
+        background-color: #012244;
+
+        .player-pic-wrapper {
+            border: 4px solid #C50D2F;
+        }
+    }
+
+    &.PIT {
+        background-color: #292929;
+
+        .player-pic-wrapper {
+            border: 4px solid #FFAD01;
+        }
+    }
+
+    &.JAC {
+        background-color: black;
+
+        .player-pic-wrapper {
+            border: 4px solid #006778;
+        }
+    }
+
+    &.CHI {
+        background-color: #0B1629;
+
+        .player-pic-wrapper {
+            border: 4px solid #C83802;
+        }
+    }
+
+    &:hover {
+        transform: translateY(-15px) scale(1.01);
+        box-shadow: 0px 0px 12px rgba($color: #000000, $alpha: 0.3);
+        cursor: pointer;
+
+        .thumb-icon-wrapper {
+            .thumb-icon {
+                color: #79d853;
+            }
+        }
+    }
+
+    .vote-button-contents {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .player-name, .player-team {
+        margin-bottom: 10px;
+        padding: 0 15px;
+    }
+
+    .player-pic-wrapper {
+        border-radius: 100px;
+        background-color: rgba($color: #000000, $alpha: 0.5);
+        padding: 8px;
+        height: 100px;
+        width: 100px;
+        margin: 30px 0;
+
+        .player-pic {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .thumb-icon-wrapper {
+        padding: 30px 0;
+        width: 50px;
+        height: 50px;
+
+        .thumb-icon {
+            transition: color 0.15s linear;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+}
