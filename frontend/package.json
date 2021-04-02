@@ -23,7 +23,6 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
