@@ -1,23 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from .models import PlayerModel, MatchupModel
-import random
-from django.template import loader
-from django.core import serializers
-from .rankingsEngine import rePlayer
-from enum import Enum
-import math
-from django.views import View
-import io,csv
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
-from .serializers import *
-import os
-import logging
-from django.views.generic import View
 from django.conf import settings
-
+from django.http import HttpResponse
+from django.views import View
+import logging
+import os
 
 class ReactAppView(View):
     index_file_path = os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')
@@ -35,30 +20,3 @@ class ReactAppView(View):
                 """,
                 status=501,
             )
-
-
-@api_view(["POST"])
-def GetNextMatchup(request):
-    players = PlayerModel.objects.filter(Position=request.data.get('position'))
-    index1 = math.floor(abs(random.uniform(0,1) - random.uniform(0,1)) * (1 + players.count() - 10))
-    index2 = index1 + random.randrange(1,10)
-    nextMatchup = MatchupModel(PlayerOne=players[index1], PlayerTwo=players[index2])
-    serializer = MatchupSerializer(nextMatchup)
-    return Response(serializer.data)
-
-@api_view(["POST"])
-def InsertMatchup(request):
-    serializer = MatchupSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["POST", "GET"])
-def GetRankings(request):
-    requestedPosition = request.data.get('position')
-    players = PlayerModel.objects.filter(Position=requestedPosition)
-    serializer = PlayerSerializer(players, many=True)
-    return Response(serializer.data)
-
