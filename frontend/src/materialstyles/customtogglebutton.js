@@ -6,6 +6,9 @@ export const CustomToggleButton = withStyles((theme) =>  ({
     root: {
         backgroundColor: theme.palette.primary.dark,
         color: theme.palette.common.white,
+        border: 'none',
+        padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
+        margin: theme.spacing(0.5),
         "&&.Mui-selected": {
             backgroundColor: theme.palette.secondary.dark,
             color: theme.palette.common.white,
@@ -20,16 +23,13 @@ export const CustomToggleButton = withStyles((theme) =>  ({
             color: theme.palette.common.white,
             boxShadow: `0 0 8px ${theme.palette.secondary.dark}`
         },
-        border: 'none',
-        padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
-        '&:not(:first-child)': {
+        '&&.MuiToggleButtonGroup-groupedHorizontal:not(:first-child)': {
             borderRadius: theme.shape.borderRadius,
             marginLeft: theme.spacing(0.5)
         },
-        '&:first-child': {
+        '&&.MuiToggleButtonGroup-groupedHorizontal:first-child': {
             borderRadius: theme.shape.borderRadius
-        },
-        margin: theme.spacing(0.5),
+        }
     },
     
 }))(ToggleButton);
