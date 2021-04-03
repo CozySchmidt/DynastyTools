@@ -6,7 +6,6 @@ import { NEXT_MATCHUP, INSERT_MATCHUP } from '../../constants/api-urls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VoteButton from '../votebutton/votebutton';
 import { ButtonGroupBox } from '../../materialstyles/buttongroupbox';
-import FormLabel from '@material-ui/core/FormLabel';
 import { CustomToggleButton } from '../../materialstyles/customtogglebutton';
 import { CustomToggleButtonGroup } from '../../materialstyles/customtogglebuttongroup';
 
@@ -82,7 +81,7 @@ class Vote extends Component {
                 <div id="matchup-container">
                     <div id="vote-options">
                         <ButtonGroupBox className="vote-option">
-                            <FormLabel><Typography variant="body1">Position</Typography></FormLabel>
+                            <Typography variant="body1">Position</Typography>
                             <CustomToggleButtonGroup 
                                 size="medium"
                                 value={this.state.position}
@@ -99,7 +98,7 @@ class Vote extends Component {
                         </ButtonGroupBox>
 
                         <ButtonGroupBox className="vote-option">
-                            <FormLabel><Typography variant="body1">Scoring</Typography></FormLabel>
+                            <Typography variant="body1">Scoring</Typography>
                             <CustomToggleButtonGroup 
                                 size="medium"
                                 value={this.state.position}

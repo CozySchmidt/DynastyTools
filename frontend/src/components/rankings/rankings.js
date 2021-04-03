@@ -12,7 +12,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import withStyles from "@material-ui/core/styles/withStyles";
 import { ButtonGroupBox } from '../../materialstyles/buttongroupbox';
-import FormLabel from '@material-ui/core/FormLabel';
 import { CustomToggleButton } from '../../materialstyles/customtogglebutton';
 import { CustomToggleButtonGroup } from '../../materialstyles/customtogglebuttongroup';
 
@@ -111,7 +110,7 @@ class Rankings extends Component {
                 <div id="ranking-wrapper">
                     <div id="ranking-filters">
                         <ButtonGroupBox className="ranking-filter">
-                            <FormLabel><Typography variant="body1">Position</Typography></FormLabel>
+                            <Typography variant="body1">Position</Typography>
                             <CustomToggleButtonGroup 
                                 size="medium"
                                 value={this.state.position}
@@ -128,7 +127,7 @@ class Rankings extends Component {
                         </ButtonGroupBox>
 
                         <ButtonGroupBox className="ranking-filter">
-                            <FormLabel><Typography variant="body1">Scoring</Typography></FormLabel>
+                            <Typography variant="body1">Scoring</Typography>
                             <CustomToggleButtonGroup 
                                 size="medium"
                                 value={this.state.position}
@@ -144,7 +143,7 @@ class Rankings extends Component {
                         </ButtonGroupBox>
 
                         <ButtonGroupBox className="ranking-filter">
-                            <FormLabel><Typography variant="body1">Teams</Typography></FormLabel>
+                            <Typography variant="body1">Teams</Typography>
                             <CustomToggleButtonGroup 
                                 size="medium"
                                 value={this.state.filteredTeams}
