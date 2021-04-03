@@ -5,44 +5,10 @@ import axios from 'axios';
 import { NEXT_MATCHUP, INSERT_MATCHUP } from '../../constants/api-urls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VoteButton from '../votebutton/votebutton';
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import TextField from '@material-ui/core/TextField';
-import withStyles from "@material-ui/core/styles/withStyles";
-
-const CustomAutocomplete = withStyles((theme) =>  ({
-    inputRoot: {
-        color: 'white',
-        '&::before': {
-            borderBottom: `1px solid white`
-        },
-        '&:hover:not(.Mui-disabled):before': {
-            borderBottom: `2px solid white`
-        }
-    },
-    popper: {
-        backgroundColor: theme.palette.primary.light,
-        borderBottomLeftRadius: '5px',
-        borderBottomRightRadius: '5px'
-    },
-    listbox: {
-        color: 'white',
-        backgroundColor: theme.palette.primary.light
-    },
-    paper: {
-        backgroundColor: theme.palette.primary.light,
-        borderRadius: 0,
-        boxShadow: 'none'
-    },
-    root: {
-        '& .MuiFormLabel-root:not(.Mui-focused)': {
-            color: 'white'
-        }
-    },
-    popupIndicator: {
-        color: 'white'
-    }
-}))(Autocomplete);
-
+import { ButtonGroupBox } from '../../materialstyles/buttongroupbox';
+import FormLabel from '@material-ui/core/FormLabel';
+import { CustomToggleButton } from '../../materialstyles/customtogglebutton';
+import { CustomToggleButtonGroup } from '../../materialstyles/customtogglebuttongroup';
 
 class Vote extends Component {
 
@@ -62,9 +28,7 @@ class Vote extends Component {
 
     nextMatchUp = () => {
         let error, response;
-        const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
-        console.log(csrf_token)
-        axios.post(NEXT_MATCHUP, {position: this.state.position}, {headers:{"X-CSRFToken": csrf_token}}).then(res => {
+        axios.post(NEXT_MATCHUP, {position: this.state.position}, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(res => {
             response = res;
         }).catch(err => {
             error = err;
@@ -82,7 +46,7 @@ class Vote extends Component {
 
         this.setState({submitting: true});
         
-        axios.post(INSERT_MATCHUP, data).then(() => {
+        axios.post(INSERT_MATCHUP, data, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(() => {
             this.nextMatchUp();
         }).catch(err => {
             console.log(err.message)
@@ -90,7 +54,9 @@ class Vote extends Component {
     }
 
     updatePosition = (event, value) => {
-        this.setState({position: value.id}, () => {
+        if (!value) return;
+
+        this.setState({position: value}, () => {
             this.nextMatchUp();
         });
     }
@@ -115,23 +81,38 @@ class Vote extends Component {
             return (
                 <div id="matchup-container">
                     <div id="vote-options">
-                        <CustomAutocomplete
-                            options={POSITIONS}
-                            style={{ width: 300 }}
-                            blurOnSelect
-                            disableClearable={true}
-                            getOptionLabel={(option) => option.text}
-                            renderInput={(params) => <TextField 
-                                                        {...params}
-                                                        label="Select Position" 
-                                                        color="secondary" 
-                                                    />
-                                        }
-                            onChange={this.updatePosition }
-                            value={POSITIONS.find(position => position.id === this.state.position)}
-                        >
-                        </CustomAutocomplete>
-                        
+                        <ButtonGroupBox className="vote-option">
+                            <FormLabel><Typography variant="body1">Position</Typography></FormLabel>
+                            <CustomToggleButtonGroup 
+                                size="medium"
+                                value={this.state.position}
+                                aria-label="Select Position"
+                                onChange={this.updatePosition}
+                                exclusive 
+                            >
+                                {POSITIONS.map((pos) => (
+                                    <CustomToggleButton value={pos} key={pos} aria-label={pos + " selector button"}>
+                                        <Typography variant="body2">{pos}</Typography>
+                                    </CustomToggleButton>
+                                ))}
+                            </CustomToggleButtonGroup>
+                        </ButtonGroupBox>
+
+                        <ButtonGroupBox className="vote-option">
+                            <FormLabel><Typography variant="body1">Scoring</Typography></FormLabel>
+                            <CustomToggleButtonGroup 
+                                size="medium"
+                                value={this.state.position}
+                                aria-label="Select Scoring Type"
+                                exclusive 
+                            >
+                                {SCORING.map((scoring) => (
+                                    <CustomToggleButton value={scoring} key={scoring} aria-label={scoring + " selector button"}>
+                                        <Typography variant="body2">{scoring}</Typography>
+                                    </CustomToggleButton>
+                                ))}
+                            </CustomToggleButtonGroup>
+                        </ButtonGroupBox>
                     </div>
                     <div id="vote-button-container">
                         <div className="vote-button" >
@@ -172,11 +153,10 @@ class Vote extends Component {
     }
 }
 
-const POSITIONS = [
-    {text: 'Quarterback', id: 'QB'},
-    {text: 'Running Back', id: 'RB'},
-    {text: 'Wide Receiver', id: 'WR'},
-    {text: 'Tight End', id: 'TE'}
-]
+const CSRF_TOKEN = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+
+const SCORING = ['Std', 'Half-PPR', 'PPR'];
+
+const POSITIONS = ['QB', 'RB', 'WR', 'TE'];
 
 export default Vote;
