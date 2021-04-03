@@ -5,7 +5,6 @@ import axios from 'axios';
 import { NEXT_MATCHUP, INSERT_MATCHUP } from '../../constants/api-urls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VoteButton from '../votebutton/votebutton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import { ButtonGroupBox } from '../../materialstyles/buttongroupbox';
 import FormLabel from '@material-ui/core/FormLabel';
 import { CustomToggleButton } from '../../materialstyles/customtogglebutton';
