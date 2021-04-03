@@ -4,8 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { GET_RANKINGS } from '../../constants/api-urls';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import TextField from '@material-ui/core/TextField';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,45 +11,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import withStyles from "@material-ui/core/styles/withStyles";
-
-const CustomAutocomplete = withStyles((theme) =>  ({
-    inputRoot: {
-        color: 'white',
-        '&::before': {
-            borderBottom: `1px solid white`
-        },
-        '&:hover:not(.Mui-disabled):before': {
-            borderBottom: `2px solid white`
-        }
-    },
-    tag: {
-        backgroundColor: theme.palette.secondary.dark,
-        color: theme.palette.common.white
-    },
-    popper: {
-        backgroundColor: theme.palette.primary.light,
-        borderBottomLeftRadius: '5px',
-        borderBottomRightRadius: '5px',
-        boxShadow: '0 2px 8px 1px rgba(0, 0, 0, 0.25)'
-    },
-    listbox: {
-        color: 'white',
-        backgroundColor: theme.palette.primary.light
-    },
-    paper: {
-        backgroundColor: theme.palette.primary.light,
-        borderRadius: 0,
-        boxShadow: 'none'
-    },
-    root: {
-        '& .MuiFormLabel-root:not(.Mui-focused)': {
-            color: 'white'
-        }
-    },
-    popupIndicator: {
-        color: 'white'
-    }
-}))(Autocomplete);
+import { ButtonGroupBox } from '../../materialstyles/buttongroupbox';
+import FormLabel from '@material-ui/core/FormLabel';
+import { CustomToggleButton } from '../../materialstyles/customtogglebutton';
+import { CustomToggleButtonGroup } from '../../materialstyles/customtogglebuttongroup';
 
 const CustomTableCell = withStyles((theme) => ({
     head: {
@@ -91,7 +54,7 @@ class Rankings extends Component {
     }
 
     getRankings = () => {
-        axios.post(GET_RANKINGS, {position: this.state.position}).then(res => {
+        axios.post(GET_RANKINGS, {position: this.state.position}, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(res => {
             this.tableData = this.setState({tableData: res.data});
             this.setTeams();
         }).catch(err => {
@@ -100,19 +63,27 @@ class Rankings extends Component {
     }
 
     updatePosition = (event, value) => {
-        this.setState({position: value.id}, () => {
+        if (!value) return;
+
+        this.setState({position: value}, () => {
             this.getRankings();
         });
     }
 
     setTeams = () => {
-        this.setState({teams: []});
+        let newTeams = [];
+        this.setState({teams: newTeams});
+        this.setState({filteredTeams: []});
 
         for (let i = 0; i < this.state.tableData.length; i++) {
             if (!this.state.teams.find(team => team === this.state.tableData[i].Team)) {
-                this.state.teams.push(this.state.tableData[i].Team)
+                newTeams.push(this.state.tableData[i].Team);
             }
         }
+
+        newTeams.sort();
+
+        this.setState({teams: newTeams});
     }
 
     setFilteredTeams = (event, value) => {
@@ -139,42 +110,54 @@ class Rankings extends Component {
             return (
                 <div id="ranking-wrapper">
                     <div id="ranking-filters">
-                        <CustomAutocomplete
-                            className="ranking-filter"
-                            options={POSITIONS}
-                            style={{ width: 300 }}
-                            blurOnSelect
-                            disableClearable={true}
-                            getOptionLabel={(option) => option.text}
-                            renderInput={(params) => <TextField 
-                                                        {...params}
-                                                        label="Select Position" 
-                                                        color="secondary" 
-                                                    />
-                                        }
-                            onChange={this.updatePosition }
-                            value={POSITIONS.find(position => position.id === this.state.position)}
-                        >
-                        </CustomAutocomplete>
-                        <CustomAutocomplete
-                            multiple
-                            size="small"
-                            limitTags={this.state.teams.length - 1}
-                            className="ranking-filter"
-                            options={this.state.teams}
-                            style={{ width: 300 }}
-                            blurOnSelect
-                            disableClearable={true}
-                            getOptionLabel={(option) => option}
-                            renderInput={(params) => <TextField 
-                                                        {...params}
-                                                        label="Filter Teams" 
-                                                        color="secondary" 
-                                                    />
-                                        }
-                            onChange={this.setFilteredTeams }
-                        >
-                        </CustomAutocomplete>
+                        <ButtonGroupBox className="ranking-filter">
+                            <FormLabel><Typography variant="body1">Position</Typography></FormLabel>
+                            <CustomToggleButtonGroup 
+                                size="medium"
+                                value={this.state.position}
+                                aria-label="Select Position"
+                                onChange={this.updatePosition}
+                                exclusive 
+                            >
+                                {POSITIONS.map((pos) => (
+                                    <CustomToggleButton value={pos} key={pos} aria-label={pos + " selector button"}>
+                                        <Typography variant="body2">{pos}</Typography>
+                                    </CustomToggleButton>
+                                ))}
+                            </CustomToggleButtonGroup>
+                        </ButtonGroupBox>
+
+                        <ButtonGroupBox className="ranking-filter">
+                            <FormLabel><Typography variant="body1">Scoring</Typography></FormLabel>
+                            <CustomToggleButtonGroup 
+                                size="medium"
+                                value={this.state.position}
+                                aria-label="Select Scoring Type"
+                                exclusive 
+                            >
+                                {SCORING.map((scoring) => (
+                                    <CustomToggleButton value={scoring} key={scoring} aria-label={scoring + " selector button"}>
+                                        <Typography variant="body2">{scoring}</Typography>
+                                    </CustomToggleButton>
+                                ))}
+                            </CustomToggleButtonGroup>
+                        </ButtonGroupBox>
+
+                        <ButtonGroupBox className="ranking-filter">
+                            <FormLabel><Typography variant="body1">Teams</Typography></FormLabel>
+                            <CustomToggleButtonGroup 
+                                size="medium"
+                                value={this.state.filteredTeams}
+                                aria-label="Select Teams"
+                                onChange={this.setFilteredTeams }
+                            >
+                                {this.state.teams.map((team) => (
+                                    <CustomToggleButton value={team} key={team} aria-label={team + " selector"}>
+                                        <Typography variant="body2">{team}</Typography>
+                                    </CustomToggleButton>
+                                ))}
+                            </CustomToggleButtonGroup>
+                        </ButtonGroupBox>
                     </div>
                     <CustomTableContainer className="rankings-table">
                         <Table>
@@ -196,6 +179,8 @@ class Rankings extends Component {
                                             </TableRow>
                                         )
                                     }
+
+                                    return null;
                                 })}
                             </TableBody>
                         </Table>
@@ -224,11 +209,10 @@ class Rankings extends Component {
     }
 }
 
-const POSITIONS = [
-    {text: 'Quarterback', id: 'QB'},
-    {text: 'Running Back', id: 'RB'},
-    {text: 'Wide Receiver', id: 'WR'},
-    {text: 'Tight End', id: 'TE'}
-]
+const CSRF_TOKEN = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+
+const SCORING = ['Std', 'Half-PPR', 'PPR'];
+
+const POSITIONS = ['QB', 'RB', 'WR', 'TE'];
 
 export default Rankings;
