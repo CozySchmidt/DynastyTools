@@ -1,3 +1,3 @@
-export const NEXT_MATCHUP = '/api/nextmatchup';
-export const INSERT_MATCHUP = '/api/insertmatchup';
-export const GET_RANKINGS = '/api/getrankings';
+export const NEXT_MATCHUP = '/api/matchups';
+export const INSERT_MATCHUP = '/api/matchups';
+export const GET_RANKINGS = '/api/players';

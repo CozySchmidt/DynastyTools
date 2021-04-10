@@ -1,13 +1,18 @@
-from django.conf.urls import url
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
 
 from rankingsApp.api.views import (
-    PlayerListView,
-    MatchupListView
+    PlayersView,
+    MatchupsView,
+    PlayersList
 )
 
 app_name = 'rankingsApp'
 
 urlpatterns = [
-    url(r'^players', PlayerListView.as_view()),
-    url(r'^matchups', MatchupListView.as_view())
+    path('players/<int:playerid>/', PlayersView.as_view()),
+    path('players/', PlayersList.as_view()),
+    path('matchups/', MatchupsView.as_view())
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

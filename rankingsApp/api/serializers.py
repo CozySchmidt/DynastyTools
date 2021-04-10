@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from rankingsApp.models import PlayerModel, MatchupModel
+from rankingsApp.models import Player, Matchup
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PlayerModel
+        model = Player
         fields = ('id', 'Name', 'Rating', 'Team', 'Position')
         extra_kwargs = {
             "id": {
@@ -18,12 +18,12 @@ class MatchupSerializer(serializers.ModelSerializer):
     PlayerTwo = PlayerSerializer(many=False)
     Winner = PlayerSerializer(many=False, required=False)
     class Meta:
-        model = MatchupModel
+        model = Matchup
         fields = ('PlayerOne', 'PlayerTwo', 'Winner')
 
     def create(self, validated_data):
-        PlayerOne = PlayerModel.objects.get(id=validated_data.pop('PlayerOne')['id'])
-        PlayerTwo = PlayerModel.objects.get(id=validated_data.pop('PlayerTwo')['id'])
-        Winner = PlayerModel.objects.get(id=validated_data.pop('Winner')['id'])
-        MatchUp = MatchupModel.objects.create(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
+        PlayerOne = Player.objects.get(id=validated_data.pop('PlayerOne')['id'])
+        PlayerTwo = Player.objects.get(id=validated_data.pop('PlayerTwo')['id'])
+        Winner = Player.objects.get(id=validated_data.pop('Winner')['id'])
+        MatchUp = Matchup.objects.create(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
         return MatchUp
