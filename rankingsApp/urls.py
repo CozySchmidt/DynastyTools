@@ -4,9 +4,10 @@ from .views import *
 from rankingsApp import views
 from django.conf.urls import url
 from django.contrib import admin
+from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^', views.ReactAppView.as_view())
+    path('upload/', UploadView.as_view(), name='upload'),
+    path('', views.ReactAppView.as_view())
 ]
-

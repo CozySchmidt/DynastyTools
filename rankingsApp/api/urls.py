@@ -4,15 +4,17 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rankingsApp.api.views import (
     PlayersView,
     MatchupsView,
-    PlayersList
+    PlayersList,
+    MatchupsList
 )
 
 app_name = 'rankingsApp'
 
 urlpatterns = [
-    path('players/<int:playerid>/', PlayersView.as_view()),
-    path('players/', PlayersList.as_view()),
-    path('matchups/', MatchupsView.as_view())
+    path('players/<int:pk>/', PlayersView.as_view(), name='playersView'),
+    path('players/', PlayersList.as_view(), name='playersList'),
+    path('matchups/<int:pk>/', MatchupsView.as_view(), name='matchupsView'),
+    path('matchups/', MatchupsList.as_view(), name='matchupsList')
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+#urlpatterns = format_suffix_patterns(urlpatterns)
