@@ -53,7 +53,7 @@ class Rankings extends Component {
     }
 
     getRankings = () => {
-        axios.post(GET_RANKINGS, {position: this.state.position}, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(res => {
+        axios.get(GET_RANKINGS+"?position="+this.state.position).then(res => {
             this.tableData = this.setState({tableData: res.data});
             this.setTeams();
         }).catch(err => {

@@ -18,17 +18,18 @@ class VoteButton extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log(this.state.playerData);
         if (prevProps.player !== this.props.player) {
             this.setState({animate: true})
         }
     }
 
     onAnimationEnd = () => {
+        console.log(this.state.playerData);
         this.setState({animate: false, playerData: this.props.player})
     }
 
     render() {
-        
         return (
             <ButtonBase 
                 className={`vote-button-container ${this.state.playerData.Team}`}

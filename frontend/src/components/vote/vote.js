@@ -27,8 +27,9 @@ class Vote extends Component {
 
     nextMatchUp = () => {
         let error, response;
-        axios.post(NEXT_MATCHUP, {position: this.state.position}, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(res => {
+        axios.get(NEXT_MATCHUP+'?position='+this.state.position, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(res => {
             response = res;
+            console.log(response);
         }).catch(err => {
             error = err;
         }).then(() => {
@@ -42,7 +43,7 @@ class Vote extends Component {
 
         let data = this.state.response.data;
         data.Winner = winner;
-
+        console.log(data);
         this.setState({submitting: true});
         
         axios.post(INSERT_MATCHUP, data, {headers:{"X-CSRFToken": CSRF_TOKEN}}).then(() => {
