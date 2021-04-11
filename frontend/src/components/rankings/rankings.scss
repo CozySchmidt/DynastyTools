@@ -7,9 +7,13 @@
         #ranking-filters {
             display: flex;
             flex-wrap: wrap;
+            justify-content: flex-start;
+            overflow: hidden;
 
             .ranking-filter {
-                padding: 15px;
+                padding: 4px;
+                box-sizing: border-box;
+                margin: 10px;
             }
         }
 
@@ -20,3 +24,14 @@
     }
 }
 
+@media only screen and (max-width: 680px) {
+    #rankings-container {
+        #ranking-wrapper {
+            #ranking-filters {
+                .ranking-filter {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 #vote-container {
     color: white;
-    width: 100%;
+    width: auto;
     height: 100%;
 
     #matchup-container {
@@ -8,17 +8,22 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        width: auto;
         height: 100%;
 
         #vote-options {
-            color: white;
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            width: auto;
+            justify-content: center;
             box-sizing: border-box;
-            width: 50%;
-            padding: 25px;
             margin-top: auto;
+            margin-bottom: 25px;
+
+            .vote-option {
+                flex: 1 0;
+                margin: 15px;
+            }
         }
 
         #vote-button-container {
@@ -48,3 +53,16 @@
     }
 }
 
+
+@media only screen and (max-width: 710px) {
+    #vote-container {
+        #matchup-container {
+            #vote-options {
+                .vote-option {
+                    flex: auto;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

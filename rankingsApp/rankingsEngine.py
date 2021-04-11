@@ -22,7 +22,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 import math
 
-class rePlayer:
+class Player:
     # Class attribute
     # The system constant, which constrains
     # the change in volatility over time.
@@ -44,7 +44,7 @@ class rePlayer:
 
     rd = property(getRd, setRd)
      
-    def __init__(self, name, rating = 1500, rd = 350, vol = 0.06):
+    def __init__(self, name, rating = 1500, rd = 50, vol = 0.01):
         # For testing purposes, preload the values
         # assigned to an unrated player.
         self.name = name

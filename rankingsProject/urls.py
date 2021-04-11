@@ -14,9 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
+from django.conf.urls import include
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
+
+app_name = 'rankingsApp'
 
 urlpatterns = [
+    path('api/', include('rankingsApp.api.urls')),
     path('', include('rankingsApp.urls'))
 ]
-  

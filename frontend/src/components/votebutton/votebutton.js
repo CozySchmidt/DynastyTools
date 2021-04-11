@@ -18,17 +18,18 @@ class VoteButton extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log(this.state.playerData);
         if (prevProps.player !== this.props.player) {
             this.setState({animate: true})
         }
     }
 
     onAnimationEnd = () => {
+        console.log(this.state.playerData);
         this.setState({animate: false, playerData: this.props.player})
     }
 
     render() {
-        
         return (
             <ButtonBase 
                 className={`vote-button-container ${this.state.playerData.Team}`}
@@ -42,7 +43,7 @@ class VoteButton extends Component {
                 >
                     <div className={`vote-button-contents`}>
                         <Typography className={`player-name`} variant="h6">{this.state.playerData.Name ? this.state.playerData.Name : 'Name Unkown'}</Typography>
-                        <Typography className={`player-team`} variant="subtitle">{this.state.playerData.Team ? this.state.playerData.Team : 'Team Unkown'}</Typography>
+                        <Typography className={`player-team`} variant="subtitle1">{this.state.playerData.Team ? this.state.playerData.Team : 'Team Unkown'}</Typography>
                         <div className="player-pic-wrapper">
                             <Person className="player-pic"></Person>
                         </div>
