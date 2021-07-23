@@ -6,6 +6,7 @@ import { Toolbar, Typography } from "@material-ui/core";
 import './tabs.scss';
 import Vote from '../vote/vote';
 import Rankings from "../rankings/rankings";
+import Calculator from "../calculator";
 
 class Nav extends Component {
 
@@ -44,6 +45,10 @@ class Nav extends Component {
                 
                 <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
                     <Rankings></Rankings>
+                </div> 
+
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
+                    <Calculator></Calculator>
                 </div> 
             </div>
         );
