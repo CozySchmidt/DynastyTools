@@ -30,6 +30,7 @@ class Nav extends Component {
                         >
                             <Tab label="Vote" />
                             <Tab label="Rankings" />
+                            <Tab label="Calculator" />
                         </Tabs>
                         <Typography id="tabs-heading" variant="h5">
                             Consensus Rankings
