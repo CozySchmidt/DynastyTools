@@ -8,6 +8,12 @@ import Vote from '../vote/vote';
 import Rankings from "../rankings/rankings";
 import Calculator from "../calculator";
 
+export const HIDDEN = {
+    VOTE: 0,
+    RANKINGS: 1,
+    CALCULATOR: 2
+}
+
 class Nav extends Component {
 
     constructor(props) {
@@ -39,15 +45,15 @@ class Nav extends Component {
                     </Toolbar>
                 
                 </AppBar>
-                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== 0}>
+                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== HIDDEN.VOTE}>
                     <Vote></Vote>
                 </div>
                 
-                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.RANKINGS}>
                     <Rankings></Rankings>
                 </div> 
 
-                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.CALCULATOR}>
                     <Calculator></Calculator>
                 </div> 
             </div>
