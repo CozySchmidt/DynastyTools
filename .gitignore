@@ -28,3 +28,5 @@ rankingsApp/__pycache__/urls.cpython-37.pyc
 rankingsApp/__pycache__/views.cpython-37.pyc
 .vscode/settings.json
 .vscode/settings.json
+migrations/*
+migrations

@@ -99,9 +99,9 @@ WSGI_APPLICATION = 'rankingsProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'rankingstestdb',
+        'NAME': 'test',
         'USER': 'postgres',
-        'PASSWORD': '123456',
+        'PASSWORD': 'dynasty123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
