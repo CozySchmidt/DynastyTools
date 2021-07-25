@@ -6,7 +6,7 @@ import { Toolbar, Typography } from "@material-ui/core";
 import './tabs.scss';
 import Vote from '../vote/vote';
 import Rankings from "../rankings/rankings";
-import Calculator from "../calculator";
+import Calculator from "../calculator/calculator";
 
 export const HIDDEN = {
     VOTE: 0,
