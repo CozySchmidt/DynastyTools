@@ -6,6 +6,13 @@ import { Toolbar, Typography } from "@material-ui/core";
 import './tabs.scss';
 import Vote from '../vote/vote';
 import Rankings from "../rankings/rankings";
+import Calculator from "../calculator/calculator";
+
+export const HIDDEN = {
+    VOTE: 0,
+    RANKINGS: 1,
+    CALCULATOR: 2
+}
 
 class Nav extends Component {
 
@@ -30,6 +37,7 @@ class Nav extends Component {
                         >
                             <Tab label="Vote" />
                             <Tab label="Rankings" />
+                            <Tab label="Calculator" />
                         </Tabs>
                         <Typography id="tabs-heading" variant="h5">
                             Consensus Rankings
@@ -37,12 +45,16 @@ class Nav extends Component {
                     </Toolbar>
                 
                 </AppBar>
-                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== 0}>
+                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== HIDDEN.VOTE}>
                     <Vote></Vote>
                 </div>
                 
-                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== 1}>
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.RANKINGS}>
                     <Rankings></Rankings>
+                </div> 
+
+                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.CALCULATOR}>
+                    <Calculator></Calculator>
                 </div> 
             </div>
         );
