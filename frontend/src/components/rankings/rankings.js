@@ -41,7 +41,7 @@ class Rankings extends Component {
         super(props);
         this.state = {
             error: null,
-            position: "QB",
+            position: "All",
             tableData: null,
             teams: [],
             filteredTeams: []
@@ -55,7 +55,6 @@ class Rankings extends Component {
     getRankings = () => {
         axios.get(GET_RANKINGS+"?position="+this.state.position).then(res => {
             this.tableData = this.setState({tableData: res.data});
-            this.setTeams();
         }).catch(err => {
             console.log(err)
         })
@@ -69,25 +68,7 @@ class Rankings extends Component {
         });
     }
 
-    setTeams = () => {
-        let newTeams = [];
-        this.setState({teams: newTeams});
-        this.setState({filteredTeams: []});
 
-        for (let i = 0; i < this.state.tableData.length; i++) {
-            if (!this.state.teams.find(team => team === this.state.tableData[i].Team)) {
-                newTeams.push(this.state.tableData[i].Team);
-            }
-        }
-
-        newTeams.sort();
-
-        this.setState({teams: newTeams});
-    }
-
-    setFilteredTeams = (event, value) => {
-        this.setState({filteredTeams: value});
-    }
 
     componentWillUnmount() {
         this.isUnmounted = true;
@@ -109,6 +90,7 @@ class Rankings extends Component {
             return (
                 <div id="ranking-wrapper">
                     <div id="ranking-filters">
+
                         <ButtonGroupBox className="ranking-filter">
                             <Typography variant="body1">Position</Typography>
                             <CustomToggleButtonGroup 
@@ -137,22 +119,6 @@ class Rankings extends Component {
                                 {SCORING.map((scoring) => (
                                     <CustomToggleButton value={scoring} key={scoring} aria-label={scoring + " selector button"}>
                                         <Typography variant="body2">{scoring}</Typography>
-                                    </CustomToggleButton>
-                                ))}
-                            </CustomToggleButtonGroup>
-                        </ButtonGroupBox>
-
-                        <ButtonGroupBox className="ranking-filter">
-                            <Typography variant="body1">Teams</Typography>
-                            <CustomToggleButtonGroup 
-                                size="medium"
-                                value={this.state.filteredTeams}
-                                aria-label="Select Teams"
-                                onChange={this.setFilteredTeams }
-                            >
-                                {this.state.teams.map((team) => (
-                                    <CustomToggleButton value={team} key={team} aria-label={team + " selector"}>
-                                        <Typography variant="body2">{team}</Typography>
                                     </CustomToggleButton>
                                 ))}
                             </CustomToggleButtonGroup>
@@ -212,6 +178,6 @@ const CSRF_TOKEN = document.cookie ? document.cookie.split('; ')?.find(row => ro
 
 const SCORING = ['Std', 'Half-PPR', 'PPR'];
 
-const POSITIONS = ['QB', 'RB', 'WR', 'TE'];
+const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE'];
 
 export default Rankings;
