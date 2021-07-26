@@ -3,13 +3,14 @@
 *.pyc
 .env
 .env.staging
-__pycache__/
+*/__pycache__
 local_settings.py
 db.sqlite3
 media
 
 # don't track virtualenv, ever!
 venv/
+.venv/
 
 # don't track node_modules because we'll be using yarn install and it will create this
 node_modules
@@ -17,16 +18,6 @@ node_modules
 # On our project configuration, the output of the collectstatic will be stored in 
 # staticfiles directory. We are ignoring files inside staticfiles but we'll track this # folder itself so that collectstatic can work on Heroku
 staticfiles/*
-rankingsApp/__pycache__/models.cpython-37.pyc
-rankingsApp/__pycache__/rankingsEngine.cpython-37.pyc
-rankingsApp/__pycache__/urls.cpython-37.pyc
-rankingsApp/__pycache__/views.cpython-37.pyc
-rankingsApp/migrations/__pycache__/0004_playermodel_team.cpython-37.pyc
-rankingsApp/__pycache__/models.cpython-37.pyc
-rankingsApp/__pycache__/rankingsEngine.cpython-37.pyc
-rankingsApp/__pycache__/urls.cpython-37.pyc
-rankingsApp/__pycache__/views.cpython-37.pyc
-.vscode/settings.json
 .vscode/settings.json
 
 */migrations/*
