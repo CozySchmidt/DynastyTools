@@ -40,7 +40,7 @@ class Nav extends Component {
                             <Tab label="Calculator" />
                         </Tabs>
                         <Typography id="tabs-heading" variant="h5">
-                            Consensus Rankings
+                            DynastyTools
                         </Typography>
                     </Toolbar>
                 

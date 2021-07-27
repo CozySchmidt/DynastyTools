@@ -32,11 +32,15 @@ ALLOWED_HOSTS = [
     '127.0.0.1', 
     'localhost', 
     '0.0.0.0', 
-    'consensus-rankings.herokuapp.com', 
+    '*.herokuapp.com',
     'consensusrankings.com', 
-    'www.consensusrankings.com'
+    'www.consensusrankings.com',
+    'dynastytools.io',
+    'www.dynastytools.io',
+    'dynastytools.com',
+    'www.dynastytools.com'
 ]
-ALLOWED_HOSTS = ['*']
+
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
