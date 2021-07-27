@@ -1,0 +1,68 @@
+#vote-container {
+    color: white;
+    width: auto;
+    height: 100%;
+
+    #matchup-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: 100%;
+
+        #vote-options {
+            display: flex;
+            flex-wrap: wrap;
+            width: auto;
+            justify-content: center;
+            box-sizing: border-box;
+            margin-top: auto;
+            margin-bottom: 25px;
+
+            .vote-option {
+                flex: 1 0;
+                margin: 15px;
+            }
+        }
+
+        #vote-button-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: auto;
+            justify-content: center;
+
+            .vote-button {
+                margin: 25px;
+                flex: 0 0 275px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    #matchup-loader {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+@media only screen and (max-width: 710px) {
+    #vote-container {
+        #matchup-container {
+            #vote-options {
+                .vote-option {
+                    flex: auto;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

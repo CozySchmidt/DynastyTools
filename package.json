@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
+    "start": "cd frontend && npm start"
+  }
+}
