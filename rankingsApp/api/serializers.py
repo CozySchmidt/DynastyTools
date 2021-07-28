@@ -4,7 +4,7 @@ from rankingsApp.models import Player, Matchup
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ('id', 'Name', 'Rating', 'Team', 'Position')
+        fields = ('id', 'Name', 'Rating', 'Team', 'Position', 'Age', 'Birthdate', 'Draftyear')
         extra_kwargs = {
             "id": {
                 "read_only": False,

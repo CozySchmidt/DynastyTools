@@ -128,9 +128,14 @@ class Rankings extends Component {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <CustomTableCell><Typography variant="subtitle1">Rating</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Name</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Team</Typography></CustomTableCell>
+                                    <CustomTableCell><Typography variant="subtitle1">Position</Typography></CustomTableCell>
+                                    <CustomTableCell><Typography variant="subtitle1">Rating</Typography></CustomTableCell>
+                                    <CustomTableCell><Typography variant="subtitle1">Age</Typography></CustomTableCell>
+                                    <CustomTableCell><Typography variant="subtitle1">Birthdate</Typography></CustomTableCell>
+                                    <CustomTableCell><Typography variant="subtitle1">Draft Year</Typography></CustomTableCell>                       
+                                    
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -138,9 +143,14 @@ class Rankings extends Component {
                                     if (this.state.filteredTeams.find(team => team === row.Team) || this.state.filteredTeams.length === 0) {
                                         return (
                                             <TableRow key={row.Name}>
-                                                <CustomTableCell>{row.Rating}</CustomTableCell>
                                                 <CustomTableCell>{row.Name}</CustomTableCell>
                                                 <CustomTableCell>{row.Team}</CustomTableCell>
+                                                <CustomTableCell>{row.Position}</CustomTableCell>
+                                                <CustomTableCell>{row.Rating}</CustomTableCell>
+                                                <CustomTableCell>{Math.floor(row.Age)}</CustomTableCell>
+                                                <CustomTableCell>{row.Birthdate}</CustomTableCell>
+                                                <CustomTableCell>{row.Draftyear}</CustomTableCell>
+                                                
                                             </TableRow>
                                         )
                                     }
