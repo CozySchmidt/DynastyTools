@@ -3,11 +3,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views import View
 import logging
 import os
-import datetime
 from .models import *
 from django.shortcuts import render
 import io,csv
-from django.http import HttpResponse, HttpResponseNotFound
 
 class ReactAppView(View):
     index_file_path = os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')
@@ -61,15 +59,3 @@ class UploadView(View):
             returnmsg = {'status_code': 500}
 
         return JsonResponse(returnmsg)
-
-# Add this CBV
-class Assets(View):
-
-    def get(self, _request, filename):
-        path = os.path.join(os.path.dirname(__file__), 'static', filename)
-
-        if os.path.isfile(path):
-            with open(path, 'rb') as file:
-                return HttpResponse(file.read(), content_type='application/javascript')
-        else:
-            return HttpResponseNotFound()
