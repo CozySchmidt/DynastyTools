@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
+    "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd .. && heroku config:set DISABLE_COLLECTSTATIC=1",
     "start": "cd frontend && npm start"
   }
 }
