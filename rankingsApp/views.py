@@ -33,7 +33,7 @@ class UploadView(View):
             return render(request, 'admin.html')
 
     def post(self, request):
-        date_patterns = ["%m/%d/%Y"]
+        #date_patterns = ["%m/%d/%Y"]
         playerFile = io.TextIOWrapper(request.FILES['players'].file)
         playerDict = csv.DictReader(playerFile)
         playerList = list(playerDict)
@@ -45,7 +45,7 @@ class UploadView(View):
                 Rating = row['Rating'],
                 Age = row['Age'],
                 Birthdate = row['Birthdate'],
-                Draftyear= row['Draftyear']
+                Draftyear = row['Draftyear']
             )
             for row in playerList
         ]
