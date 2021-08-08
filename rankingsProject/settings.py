@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'rankingsApp',
     'whitenoise.runserver_nostatic',
     'corsheaders',
-    'rest_framework',
-    'django_filters'
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -62,8 +61,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'rankingsProject.urls'
 

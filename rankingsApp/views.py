@@ -50,12 +50,12 @@ class UploadView(View):
             for row in playerList
         ]
         try:
-            print(objs)
+            Player.objects.all().delete()
             msg = Player.objects.bulk_create(objs)
             returnmsg = {"status_code": 200}
             print('import successful')
         except Exception as e:
-            print('error importing: ', e)
+            print(e)
             returnmsg = {'status_code': 500}
 
         return JsonResponse(returnmsg)
