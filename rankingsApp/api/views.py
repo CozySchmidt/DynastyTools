@@ -128,6 +128,7 @@ class MatchupsList(APIView):
 
     def GetNextMatchup(self, position):
         players = Player.objects.all()
+        print(position)
         if position in Valid_Positions:
             players = players.filter(Position=position)
         
