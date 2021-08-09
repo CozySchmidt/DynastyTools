@@ -153,7 +153,7 @@ class Vote extends Component {
     }
 }
 
-const CSRF_TOKEN = document.cookie ? document.cookie.split('; ')?.find(row => row.startsWith('csrftoken='))?.split('=')[1] : null;
+const CSRF_TOKEN = document.cookie ? document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1] : null;
 
 const SCORING = ['Std', 'Half-PPR', 'PPR'];
 

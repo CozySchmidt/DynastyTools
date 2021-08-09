@@ -128,9 +128,10 @@ class MatchupsList(APIView):
 
     def GetNextMatchup(self, position):
         players = Player.objects.all()
-        if position not in Valid_Positions:
-            position = random.choice(Valid_Positions)
-        players = players.filter(Position=position)
+        if position in Valid_Positions:
+            players = players.filter(Position=position)
+        
+        #pick higher rated players more often
         players = players.order_by('-Rating', 'Name')
         index1 = math.floor(
             abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + players.count() - 10))
