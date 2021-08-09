@@ -108,54 +108,34 @@ class Rankings extends Component {
                             </CustomToggleButtonGroup>
                         </ButtonGroupBox>
 
-                        <ButtonGroupBox className="ranking-filter">
-                            <Typography variant="body1">Scoring</Typography>
-                            <CustomToggleButtonGroup 
-                                size="medium"
-                                value={this.state.position}
-                                aria-label="Select Scoring Type"
-                                exclusive 
-                            >
-                                {SCORING.map((scoring) => (
-                                    <CustomToggleButton value={scoring} key={scoring} aria-label={scoring + " selector button"}>
-                                        <Typography variant="body2">{scoring}</Typography>
-                                    </CustomToggleButton>
-                                ))}
-                            </CustomToggleButtonGroup>
-                        </ButtonGroupBox>
                     </div>
                     <CustomTableContainer className="rankings-table">
                         <Table>
                             <TableHead>
                                 <TableRow>
+                                    <CustomTableCell><Typography variant="subtitle1">#</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Name</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Team</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Position</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Rating</Typography></CustomTableCell>
                                     <CustomTableCell><Typography variant="subtitle1">Age</Typography></CustomTableCell>
-                                    <CustomTableCell><Typography variant="subtitle1">Birthdate</Typography></CustomTableCell>
-                                    <CustomTableCell><Typography variant="subtitle1">Draft Year</Typography></CustomTableCell>                       
-                                    
+                                    <CustomTableCell><Typography variant="subtitle1">Draft Year</Typography></CustomTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.tableData.map((row) => {
-                                    if (this.state.filteredTeams.find(team => team === row.Team) || this.state.filteredTeams.length === 0) {
-                                        return (
-                                            <TableRow key={row.Name}>
-                                                <CustomTableCell>{row.Name}</CustomTableCell>
-                                                <CustomTableCell>{row.Team}</CustomTableCell>
-                                                <CustomTableCell>{row.Position}</CustomTableCell>
-                                                <CustomTableCell>{row.Rating}</CustomTableCell>
-                                                <CustomTableCell>{Math.floor(row.Age)}</CustomTableCell>
-                                                <CustomTableCell>{row.Birthdate}</CustomTableCell>
-                                                <CustomTableCell>{row.Draftyear}</CustomTableCell>
-                                                
-                                            </TableRow>
-                                        )
-                                    }
-
-                                    return null;
+                                {this.state.tableData.map((row, i) => {
+                                    i++;
+                                    return (
+                                        <TableRow key={row.Name}>
+                                            <CustomTableCell>{i+'.'}</CustomTableCell>
+                                            <CustomTableCell>{row.Name}</CustomTableCell>
+                                            <CustomTableCell>{row.Team}</CustomTableCell>
+                                            <CustomTableCell>{row.Position}</CustomTableCell>
+                                            <CustomTableCell>{Math.round(row.Rating)}</CustomTableCell>
+                                            <CustomTableCell>{Math.floor(row.Age)}</CustomTableCell>
+                                            <CustomTableCell>{row.Draftyear}</CustomTableCell>
+                                        </TableRow>
+                                    )
                                 })}
                             </TableBody>
                         </Table>
@@ -184,9 +164,7 @@ class Rankings extends Component {
     }
 }
 
-const CSRF_TOKEN = document.cookie ? document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1] : null;
-
-const SCORING = ['Std', 'Half-PPR', 'PPR'];
+const CSRF_TOKEN = document.cookie ? document.cookie.split('; ')?.find(row => row.startsWith('csrftoken='))?.split('=')[1] : null;
 
 const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE'];
 
