@@ -164,9 +164,7 @@ class Rankings extends Component {
     }
 }
 
-const CSRF_TOKEN = document.cookie ? document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1] : null;
-
-const SCORING = ['Std', 'Half-PPR', 'PPR'];
+const CSRF_TOKEN = document.cookie ? document.cookie.split('; ')?.find(row => row.startsWith('csrftoken='))?.split('=')[1] : null;
 
 const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE'];
 
