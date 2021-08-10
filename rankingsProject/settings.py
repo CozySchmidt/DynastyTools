@@ -26,16 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "NOT_SECRET"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    '127.0.0.1', 
-    'localhost', 
-    '0.0.0.0', 
-    'consensus-rankings.herokuapp.com', 
-    'consensusrankings.com', 
-    'www.consensusrankings.com'
-]
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
@@ -50,28 +42,25 @@ INSTALLED_APPS = [
     'rankingsApp',
     'whitenoise.runserver_nostatic',
     'corsheaders',
-    'rest_framework',
-    'django_filters'
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'rankingsProject.urls'
 
@@ -109,7 +98,6 @@ DATABASES = {
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -172,10 +160,8 @@ REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend')
 
 STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIR, 'build', 'static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
-
-
-REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend')
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'

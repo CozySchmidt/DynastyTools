@@ -17,7 +17,7 @@ class Vote extends Component {
             error: null,
             response: null,
             submitting: false,
-            position: "QB"
+            position: "All"
         }
     }
 
@@ -97,22 +97,6 @@ class Vote extends Component {
                                 ))}
                             </CustomToggleButtonGroup>
                         </ButtonGroupBox>
-
-                        <ButtonGroupBox className="vote-option">
-                            <Typography variant="body1">Scoring</Typography>
-                            <CustomToggleButtonGroup 
-                                size="medium"
-                                value={this.state.position}
-                                aria-label="Select Scoring Type"
-                                exclusive 
-                            >
-                                {SCORING.map((scoring) => (
-                                    <CustomToggleButton value={scoring} key={scoring} aria-label={scoring + " selector button"}>
-                                        <Typography variant="body2">{scoring}</Typography>
-                                    </CustomToggleButton>
-                                ))}
-                            </CustomToggleButtonGroup>
-                        </ButtonGroupBox>
                     </div>
                     <div id="vote-button-container">
                         <div className="vote-button" >
@@ -155,8 +139,6 @@ class Vote extends Component {
 
 const CSRF_TOKEN = document.cookie ? document.cookie.split('; ')?.find(row => row.startsWith('csrftoken='))?.split('=')[1] : null;
 
-const SCORING = ['Std', 'Half-PPR', 'PPR'];
-
-const POSITIONS = ['QB', 'RB', 'WR', 'TE'];
+const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE'];
 
 export default Vote;
