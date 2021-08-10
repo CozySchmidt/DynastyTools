@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+!*.any
+/build/static/*
 
 # misc
 .DS_Store
