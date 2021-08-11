@@ -12,7 +12,9 @@ AGE_DEFAULT = 200
 TEAM_DEFAULT = "N/A"
 
 # Create your models here.
-
+class User(models.model):
+    Username = models.CharField(max_length=20)
+    
 
 class Player(models.Model):
     Name = models.CharField(max_length=255)
