@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rankingsApp.models import Player, Matchup
+from rankingsApp.models import Player, Matchup, User
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,3 +27,9 @@ class MatchupSerializer(serializers.ModelSerializer):
         Winner = Player.objects.get(id=validated_data.pop('Winner')['id'])
         MatchUp = Matchup.objects.create(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
         return MatchUp
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'Username')
