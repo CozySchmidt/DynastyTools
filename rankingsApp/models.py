@@ -1,18 +1,17 @@
 from django.db import models
 from django.utils import timezone
-import datetime
-import math
 from django.core.exceptions import ObjectDoesNotExist
 
 RATING_DEFAULT = 1500
-DEVIATION_DEFUALT = 500
+DEVIATION_DEFUALT = 100
 VOLATILITY_DEFAULT = .1
 DATE_DEFAULT = 1900
 AGE_DEFAULT = 200
 TEAM_DEFAULT = "N/A"
+DEFAULT_USER_ID = 1
 
 # Create your models here.
-class User(models.model):
+class User(models.Model):
     Username = models.CharField(max_length=20)
 
 
@@ -30,7 +29,7 @@ class Player(models.Model):
 
 
 class Rating(models.Model):
-    User = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
+    User = models.ForeignKey(User, default=DEFAULT_USER_ID, related_name='Rating_User', on_delete=models.CASCADE)
     Player = models.ForeignKey(Player, related_name='Player', on_delete=models.CASCADE)
     Rating = models.FloatField(default=RATING_DEFAULT)
     Deviation = models.FloatField(default=DEVIATION_DEFUALT)
@@ -38,10 +37,10 @@ class Rating(models.Model):
 
 
 class Matchup(models.Model):
-    User = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
+    User = models.ForeignKey(User, default=DEFAULT_USER_ID, related_name='Matchup_User', on_delete=models.CASCADE)
     PlayerOne = models.ForeignKey(Player, related_name='PlayerOne', on_delete=models.CASCADE)
     PlayerTwo = models.ForeignKey(Player, related_name='PlayerTwo', on_delete=models.CASCADE)
-    Result = models.NullBooleanField()
+    Result = models.BooleanField(null=True, default=None)
     ComparisonDatetime = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
