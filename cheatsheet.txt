@@ -1,0 +1,35 @@
+Use python environment for django stuff
+
+Getting into environment:
+ - venv\Scripts\Activate.bat
+ 
+
+Open 2 cmd lines.   
+    One in evironment at the root of the project (where manage.py is)
+    One not in environment in the frontend folder
+
+
+
+Starting the server with new changes:
+(in \frontend, without venv)
+    npm run build
+
+(In venv)
+    if changes in models.py:
+        python manage.py makemigrations
+        python manage.py migrate
+    
+    python manage.py collectstatic --no-input
+    python manage.py runserver
+
+
+
+Git:
+    commit your changes to your working branch / or discard changes
+    checkout develop
+    pull
+    create new branch 'initial/version_branchname_itemnumber' -> 'LC/0.0.1_create_cheatsheet_37'
+    (make ur code changes)
+    commit
+    push
+    (make pull request on github to merge your branch into develop)
