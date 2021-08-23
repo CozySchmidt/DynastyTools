@@ -9,5 +9,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload/', UploadView.as_view(), name='upload'),
+    path('rankings', views.ReactAppView.as_view()),
+    path('calculator', views.ReactAppView.as_view()),
     path('', views.ReactAppView.as_view())
 ]

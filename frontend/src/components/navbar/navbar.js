@@ -3,10 +3,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Toolbar, Typography } from "@material-ui/core";
-import './tabs.scss';
+import './navbar.scss';
 import Vote from '../vote/vote';
 import Rankings from "../rankings/rankings";
 import Calculator from "../calculator/calculator";
+import { NavLink } from "react-router-dom";
 
 export const HIDDEN = {
     VOTE: 0,
@@ -14,7 +15,7 @@ export const HIDDEN = {
     CALCULATOR: 2
 }
 
-class Nav extends Component {
+class Navbar extends Component {
 
     constructor(props) {
         super(props);
@@ -23,6 +24,8 @@ class Nav extends Component {
         }
     }
 
+
+    
     render() {
 
         return (
@@ -35,9 +38,15 @@ class Nav extends Component {
                             aria-label="page tabs"
                             id="tabs"
                         >
-                            <Tab label="Vote" />
-                            <Tab label="Rankings" />
-                            <Tab label="Calculator" />
+                            <Tab label="Vote">
+                                <NavLink exact to="/"></NavLink>
+                            </Tab>
+                            <Tab label="Rankings">
+                                <NavLink exact to="/rankings"></NavLink>
+                            </Tab>
+                            <Tab label="Calculator">
+                                <NavLink exact to="/calculator"></NavLink>
+                            </Tab>
                         </Tabs>
                         <Typography id="tabs-heading" variant="h5">
                             Consensus Rankings
@@ -45,17 +54,7 @@ class Nav extends Component {
                     </Toolbar>
                 
                 </AppBar>
-                <div role="tabpanel" className="tab-panel" hidden={this.state.value !== HIDDEN.VOTE}>
-                    <Vote></Vote>
-                </div>
-                
-                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.RANKINGS}>
-                    <Rankings></Rankings>
-                </div> 
 
-                <div role="tabpanel" className="tab-panel"  hidden={this.state.value !== HIDDEN.CALCULATOR}>
-                    <Calculator></Calculator>
-                </div> 
             </div>
         );
     }
@@ -65,4 +64,4 @@ class Nav extends Component {
     }
 }
 
-export default Nav;
+export default Navbar;
