@@ -6,6 +6,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'Username')
+        extra_kwargs = {
+            "id": {
+                "read_only": False,
+                "required": False,
+            },
+        }
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -23,12 +29,13 @@ class PlayerSerializer(serializers.ModelSerializer):
 class MatchupSerializer(serializers.ModelSerializer):
     PlayerOne = PlayerSerializer(many=False)
     PlayerTwo = PlayerSerializer(many=False)
+    User = UserSerializer(many=False)
     class Meta:
         model = Matchup
         fields = ('User', 'PlayerOne', 'PlayerTwo', 'Result')
 
     def create(self, validated_data):
-        user = User.objects.get(validated_data.pop('User')['id'])
+        user = User.objects.get(id=validated_data.pop('User')['id'])
         playerOne = Player.objects.get(id=validated_data.pop('PlayerOne')['id'])
         playerTwo = Player.objects.get(id=validated_data.pop('PlayerTwo')['id'])
         result = validated_data.pop('Result')
@@ -37,6 +44,8 @@ class MatchupSerializer(serializers.ModelSerializer):
 
 
 class RatingSerializer(serializers.ModelSerializer):
+    User = UserSerializer(many=False)
+    Player = PlayerSerializer(many=False)
     class Meta:
         model = Rating
         fields = ('User', 'Player', 'Rating', 'Deviation', 'Volatility')

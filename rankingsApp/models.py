@@ -25,19 +25,24 @@ class Player(models.Model):
     Draftyear = models.CharField(default=DATE_DEFAULT, max_length=10)
 
     def __str__(self):
-        return self.Name
+        return self.Name + " | " + self.Team
 
 
 class Rating(models.Model):
-    User = models.ForeignKey(User, default=DEFAULT_USER_ID, related_name='Rating_User', on_delete=models.CASCADE)
-    Player = models.ForeignKey(Player, related_name='Player', on_delete=models.CASCADE)
+    User = models.ForeignKey(User, default=DEFAULT_USER_ID, on_delete=models.CASCADE)
+    Player = models.ForeignKey(Player, related_name='PlayerRating', on_delete=models.CASCADE)
     Rating = models.FloatField(default=RATING_DEFAULT)
     Deviation = models.FloatField(default=DEVIATION_DEFUALT)
     Volatility = models.FloatField(default=VOLATILITY_DEFAULT)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['User', 'Player'], name='user-player-unique')
+        ]
+
 
 class Matchup(models.Model):
-    User = models.ForeignKey(User, default=DEFAULT_USER_ID, related_name='Matchup_User', on_delete=models.CASCADE)
+    User = models.ForeignKey(User, default=DEFAULT_USER_ID, on_delete=models.CASCADE)
     PlayerOne = models.ForeignKey(Player, related_name='PlayerOne', on_delete=models.CASCADE)
     PlayerTwo = models.ForeignKey(Player, related_name='PlayerTwo', on_delete=models.CASCADE)
     Result = models.BooleanField(null=True, default=None)

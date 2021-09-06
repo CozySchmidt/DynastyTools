@@ -2,7 +2,7 @@ import './rankings.scss';
 import React, { Component } from "react";
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import { GET_RANKINGS } from '../../constants/api-urls';
+import { GET_RANKINGS, GET_RATINGS } from '../../constants/api-urls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -49,12 +49,13 @@ class Rankings extends Component {
     }
 
     componentDidMount() {
-        this.getRankings();
+        this.getRatings();
     }
 
-    getRankings = () => {
-        axios.get(GET_RANKINGS+"?position="+this.state.position).then(res => {
+    getRatings = () => {
+        axios.get(GET_RATINGS+"?position="+this.state.position).then(res => {
             this.tableData = this.setState({tableData: res.data});
+            console.log(res.data)
         }).catch(err => {
             console.log(err)
         })
@@ -64,7 +65,7 @@ class Rankings extends Component {
         if (!value) return;
 
         this.setState({position: value}, () => {
-            this.getRankings();
+            this.getRatings();
         });
     }
 
@@ -128,12 +129,12 @@ class Rankings extends Component {
                                     return (
                                         <TableRow key={row.Name}>
                                             <CustomTableCell>{i+'.'}</CustomTableCell>
-                                            <CustomTableCell>{row.Name}</CustomTableCell>
-                                            <CustomTableCell>{row.Team}</CustomTableCell>
-                                            <CustomTableCell>{row.Position}</CustomTableCell>
+                                            <CustomTableCell>{row.Player.Name}</CustomTableCell>
+                                            <CustomTableCell>{row.Player.Team}</CustomTableCell>
+                                            <CustomTableCell>{row.Player.Position}</CustomTableCell>
                                             <CustomTableCell>{Math.round(row.Rating)}</CustomTableCell>
-                                            <CustomTableCell>{Math.floor(row.Age)}</CustomTableCell>
-                                            <CustomTableCell>{row.Draftyear}</CustomTableCell>
+                                            <CustomTableCell>{Math.floor(row.Player.Age)}</CustomTableCell>
+                                            <CustomTableCell>{row.Player.Draftyear}</CustomTableCell>
                                         </TableRow>
                                     )
                                 })}

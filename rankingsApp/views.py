@@ -28,30 +28,42 @@ class ReactAppView(View):
 class UploadView(View):
     def get(self, request):
         if 'isAdmin' not in request.session or request.session['isAdmin'] is False:
+            #require admin in the future
             return render(request, 'admin.html')
         else:
             return render(request, 'admin.html')
 
     def post(self, request):
-        #date_patterns = ["%m/%d/%Y"]
-        playerFile = io.TextIOWrapper(request.FILES['players'].file)
-        playerDict = csv.DictReader(playerFile)
-        playerList = list(playerDict)
-        objs = [
-            Player(
-                Name = row['Name'],
-                Team = row['Team'],
-                Position = row['Position'],
-                Rating = row['Rating'],
-                Age = row['Age'],
-                Birthdate = row['Birthdate'],
-                Draftyear = row['Draftyear']
-            )
-            for row in playerList
-        ]
         try:
             Player.objects.all().delete()
-            msg = Player.objects.bulk_create(objs)
+            Rating.objects.all().delete()
+            #date_patterns = ["%m/%d/%Y"]
+            playerFile = io.TextIOWrapper(request.FILES['players'].file)
+            playerDict = csv.DictReader(playerFile)
+
+            user, created = User.objects.get_or_create(id=1, Username="Global")
+
+            playerList = list(playerDict)
+            for row in playerList:
+                #
+                player = Player(
+                    Name = row['Name'],
+                    Team = row['Team'],
+                    Position = row['Position'],
+                    Age = row['Age'],
+                    Birthdate = row['Birthdate'],
+                    Draftyear = row['Draftyear']
+                )
+                player.save()
+
+                if 'Rating' in row:
+                    rating = Rating(
+                        User = user,
+                        Player = player,
+                        Rating = row['Rating']
+                    )
+                    rating.save()
+
             returnmsg = {"status_code": 200}
             print('import successful')
         except Exception as e:

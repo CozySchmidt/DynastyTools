@@ -38,11 +38,11 @@ class Vote extends Component {
         })
     }
 
-    submitVote(winner) {
+    submitVote(result) {
         if (this.state.submitting) return;
 
         let data = this.state.response.data;
-        data.Winner = winner;
+        data.Result = result;
         console.log(data);
         this.setState({submitting: true});
         
@@ -102,14 +102,14 @@ class Vote extends Component {
                         <div className="vote-button" >
                             <VoteButton 
                                 player={this.state.response.data.PlayerOne}
-                                onClick={() => this.submitVote(this.state.response.data.PlayerOne)}
+                                onClick={() => this.submitVote(true)}
                             >
                             </VoteButton>
                         </div>
                         <div className="vote-button">
                             <VoteButton 
                                 player={this.state.response.data.PlayerTwo}
-                                onClick={() => this.submitVote(this.state.response.data.PlayerTwo)}
+                                onClick={() => this.submitVote(false)}
                             >
                             </VoteButton>
                         </div>
