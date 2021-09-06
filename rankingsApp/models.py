@@ -30,7 +30,7 @@ class Player(models.Model):
 
 class Rating(models.Model):
     User = models.ForeignKey(User, default=DEFAULT_USER_ID, on_delete=models.CASCADE)
-    Player = models.ForeignKey(Player, related_name='PlayerRating', on_delete=models.CASCADE)
+    Player = models.ForeignKey(Player, on_delete=models.CASCADE)
     Rating = models.FloatField(default=RATING_DEFAULT)
     Deviation = models.FloatField(default=DEVIATION_DEFUALT)
     Volatility = models.FloatField(default=VOLATILITY_DEFAULT)

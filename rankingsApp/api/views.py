@@ -27,7 +27,7 @@ class RatingsList(APIView):
 
         ratings = Rating.objects.filter(User=user.id).order_by('-Rating', 'id')
         if position in Valid_Positions:
-            ratings = ratings.filter(Player_Position=position)
+            ratings = ratings.filter(Player__Position=position)
         serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)
 
@@ -149,7 +149,7 @@ class MatchupsList(APIView):
         playerRatings = Rating.objects.filter(User="1").order_by('-Rating', 'id')
 
         if position in Valid_Positions:
-            playerRatings = playerRatings.filter(Player_Position=position)
+            playerRatings = playerRatings.filter(Player__Position=position)
         
         #pick higher rated players more often
         index1 = math.floor(
