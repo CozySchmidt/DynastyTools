@@ -5,14 +5,18 @@ from rankingsApp.api.views import (
     PlayersView,
     MatchupsView,
     PlayersList,
-    MatchupsList
+    MatchupsList,
+    RatingsList
 )
 
 app_name = 'rankingsApp'
 
 urlpatterns = [
+    path('ratings/', RatingsList.as_view(), name='ratingsList'),
+
     path('players/<int:pk>/', PlayersView.as_view(), name='playersView'),
     path('players/', PlayersList.as_view(), name='playersList'),
+
     path('matchups/<int:pk>/', MatchupsView.as_view(), name='matchupsView'),
     path('matchups/', MatchupsList.as_view(), name='matchupsList')
 ]
