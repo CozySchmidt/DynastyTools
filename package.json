@@ -2,5 +2,9 @@
   "scripts": {
     "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
     "start": "cd frontend && npm start"
+  },
+  "engines": {
+    "node": "^16.6.0",
+    "npm": "^7.20.1"
   }
 }
