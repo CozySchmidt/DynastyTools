@@ -1,0 +1,18 @@
+/* Setup
+------------------------------*/
+
+@use './variables';
+@use './base';
+
+/* Components
+------------------------------*/
+
+@use './components/navbar';
+@use './components/buttongroup';
+@use './components/playercard';
+
+/* Pages
+------------------------------*/
+
+@use './pages/votepage';
+@use './pages/rankingspage';

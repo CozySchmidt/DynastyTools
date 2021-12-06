@@ -1,0 +1,39 @@
+/* Colors
+---------------------------------*/
+
+$dt-colors: (
+    50 : #e5e5e7,
+    100 : #bebec2,
+    200 : #92939a,
+    300 : #666872,
+    400 : #464753,
+    500 : #252735,
+    600 : #212330,
+    700 : #1b1d28,
+    800 : #161722,
+    900 : #0d0e16,
+    A100 : #5a5aff,
+    A200 : #2727ff,
+    A400 : #0000f3,
+    A700 : #0000da
+);
+
+$cr-primary: #25323f;
+$cr-primary-dark: darken(#25323f, 3%);
+$cr-primary-light: lighten(#25323f, 10%);
+
+$text-main-color: #fff;
+
+$link-color: #d8d8d8;
+$link-color-active: #fff;
+
+/* Structure
+---------------------------------*/
+
+$header-height: 4rem;
+
+
+/* Typography
+---------------------------------*/
+
+$font-family: 'Quicksand', sans-serif;

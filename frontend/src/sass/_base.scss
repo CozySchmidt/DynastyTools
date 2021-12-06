@@ -1,0 +1,112 @@
+@use './variables' as vars;
+
+html {
+    background-color: map-get(vars.$dt-colors, 500);
+    color: vars.$text-main-color;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-family: vars.$font-family;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+#root {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: 46em) { 
+        display: grid;
+        grid-template-areas:
+        'header main';
+        grid-template-columns: 12.5rem 1fr;
+
+        header {
+            grid-area: header;
+
+        }
+
+        main {
+            grid-area: main;
+        }
+    }
+}
+
+main {
+    margin-bottom: vars.$header-height;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    
+    @media screen and (min-width: 46em) {
+        margin-bottom: 0;
+        grid-area: main;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+a {
+    color: vars.$link-color;
+    text-decoration: none;
+    transition: color 0.25s ease-in-out;
+
+    &:hover,
+    &:focus {
+        outline: none;
+        border: none;
+        color: vars.$link-color-active;
+    }
+}
+
+button {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+table {
+    width: 100%;
+    background-color: rgba(#000, 0.2);
+    border-collapse: collapse;
+
+    thead {
+        font-size: 1.1rem;
+        box-sizing: border-box;
+    }
+
+    tbody {
+        
+        tr:last-child {
+            td {
+                border-bottom: none;
+            }
+        }
+
+    }
+
+    tr {
+
+        td, th {
+            font-weight: 400;
+            border-bottom: 1px solid rgba(#fff, 0.2);
+            text-align: left;
+            padding: 1rem;
+        }
+    }
+}

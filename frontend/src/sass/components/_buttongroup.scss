@@ -1,0 +1,41 @@
+@use '../variables' as vars;
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+
+    .group-label {
+        width: 100%;
+        margin-bottom: 0.4rem;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(#000, 0.2);
+        margin: 0.25rem 0.5rem;
+        padding: 0.25rem 0.5rem;
+        transition: 0.25s ease-in-out;
+        margin-left: 0;
+
+        &:hover,
+        &:focus,
+        &:focus-within {
+            cursor: pointer;
+            background-color: rgba(#fff, 0.1);
+        }
+
+        &.active {
+            background-color: map-get(vars.$dt-colors, A100);
+        }
+        
+        input {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+    }
+
+}
