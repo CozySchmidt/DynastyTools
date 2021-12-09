@@ -6,7 +6,7 @@ import { ReactComponent as Logo } from '../images/logo.svg';
 const Navbar = () => {
 
     const [state, setState] = useState('');
-    const mediaQ = useRef(window.matchMedia('(min-width: 46em)'));
+    const mediaQ = useRef(window.matchMedia('(min-width: 46em) and (min-height: 36em)'));
 
     const checkMediaQ = () => {
         if (mediaQ.current.matches) setState('');
