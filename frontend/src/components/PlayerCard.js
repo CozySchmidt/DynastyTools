@@ -8,7 +8,7 @@ const PlayerCard = ({ player, showFullDetails, children, animateOnChange = true,
 
     useEffect(() => {
         if (!animateOnChange) setPlayerToShow(player)
-    }, [player]);
+    }, [player, animateOnChange]);
 
     return (
         <article className={`player-card ${playerToShow.Team}`} ref={cardRef} >
