@@ -23,7 +23,7 @@ html, body {
     display: flex;
     flex-direction: column;
 
-    @media screen and (min-width: 46em) { 
+    @media screen and (min-width: 46em) and (min-height: 36em) { 
         display: grid;
         grid-template-areas:
         'header main';
@@ -46,7 +46,7 @@ main {
     width: 100%;
     box-sizing: border-box;
     
-    @media screen and (min-width: 46em) {
+    @media screen and (min-width: 46em) and (min-height: 36em) {
         margin-bottom: 0;
         grid-area: main;
     }
