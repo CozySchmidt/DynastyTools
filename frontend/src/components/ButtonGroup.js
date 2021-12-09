@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ButtonGroup = ({ buttons, label , allowMultiple = false, onChange, defaultValue = allowMultiple ? [] : null, value, className}) => {
 
@@ -20,6 +20,10 @@ const ButtonGroup = ({ buttons, label , allowMultiple = false, onChange, default
         setSelectedValue(allowMultiple ? [...selectedValue, value] : value);
         onChange(allowMultiple ? [...selectedValue, value] : value);
     }
+
+    useEffect(() => {
+        if (value !== undefined) setSelectedValue(value);
+    }, [value])
 
     return (
         <div className={`${className} button-group`} title={label}>
