@@ -7,7 +7,6 @@ import { ThumbsUp } from 'react-feather';
 
 //Router stuff
 import { useSearchParams } from 'react-router-dom';
-import { withRouter } from '../hooks/withRouter';
 
 const VotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -34,10 +33,14 @@ const VotePage = () => {
 
     }, [pos]);
 
+    
     useEffect(() => {
         nextMatchUp();
-        if (pos) setSearchParams({...searchParams, position: pos});
-    }, [pos, nextMatchUp, searchParams, setSearchParams])
+    }, [pos, nextMatchUp])
+
+    useEffect(() => {
+        setPos(searchParams.get('position'));
+    }, [searchParams])
 
     const submitVote = (winner) => {
         if (submitting) return;
@@ -62,9 +65,9 @@ const VotePage = () => {
                 <ButtonGroup 
                     buttons={POSITION_BUTTONS} 
                     defaultValue="All" 
-                    onChange={setPos} 
+                    onChange={(pos) => setSearchParams({...searchParams, position: pos})} 
                     label="Choose A Position" 
-                    value={pos}
+                    value={pos ? pos : 'All'}
                 />
 
                 {
@@ -99,4 +102,4 @@ const VotePage = () => {
     )
 }
 
-export default withRouter(VotePage);
+export default VotePage;

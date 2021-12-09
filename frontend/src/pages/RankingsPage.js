@@ -3,11 +3,10 @@ import axios from 'axios';
 import { GET_RANKINGS } from '../constants/api-urls';
 import ButtonGroup from "../components/ButtonGroup";
 import PlayerCard from "../components/PlayerCard";
+import { Grid, List } from "react-feather";
 
 //Router stuff
 import { useSearchParams } from 'react-router-dom';
-import { withRouter } from '../hooks/withRouter';
-import { Grid, List } from "react-feather";
 
 const RankingsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -38,10 +37,12 @@ const RankingsPage = () => {
     }, [pos]);
 
     useEffect(() => {
-        if (pos) setSearchParams({...searchParams, position: pos});
-
         getRankings();
-    }, [pos, getRankings, searchParams, setSearchParams])
+    }, [pos, getRankings])
+
+    useEffect(() => {
+        setPos(searchParams.get('position'));
+    }, [searchParams])
 
     return (
         <section className={`rankings-section`}>
@@ -52,9 +53,9 @@ const RankingsPage = () => {
                 <ButtonGroup 
                     buttons={POSITION_BUTTONS} 
                     defaultValue="All" 
-                    onChange={setPos} 
+                    onChange={(pos) => setSearchParams({...searchParams, position: pos})} 
                     label="Select A Position" 
-                    value={pos}
+                    value={pos ? pos : 'All'}
                 />
             </div>
 
@@ -87,7 +88,7 @@ const RankingsPage = () => {
                             </thead>
                             <tbody>
                                 { players.map((player, i) => (
-                                    <tr>
+                                    <tr key={player.id}>
                                         <td>{i + 1}</td>
                                         <td>{player.Name}</td>
                                         <td>{player.Rating.toFixed(0)}</td>
@@ -109,4 +110,4 @@ const RankingsPage = () => {
     )
 }
 
-export default withRouter(RankingsPage);
+export default RankingsPage;
