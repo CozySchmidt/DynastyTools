@@ -4,7 +4,7 @@ from rankingsApp.models import Player, Matchup, User, Ranking
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('Username', 'Password')
+        fields = ('Username')
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -14,6 +14,8 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class RankingSerializer(serializers.ModelSerializer):
+    User = UserSerializer(many=False)
+    Player = PlayerSerializer(many=False)
     class Meta:
         model = Ranking
         fields = ('User', 'Player', 'Rating', 'Deviation', 'Volatility')

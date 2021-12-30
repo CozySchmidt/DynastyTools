@@ -20,6 +20,7 @@ class MatchupsList(APIView):
         position = request.GET.get('position')
         nextMatchup = self.CreateNextMatchup(position)
         serializer = MatchupSerializer(nextMatchup, many=False)
+        print(serializer.data)
         return Response(serializer.data)
 
     """

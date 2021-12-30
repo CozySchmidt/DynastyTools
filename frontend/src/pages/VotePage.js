@@ -24,6 +24,7 @@ const VotePage = () => {
 
     const nextMatchUp = useCallback(() => {
         axios.get(`${NEXT_MATCHUP}${pos ? `?position=${pos}` :''}`).then(res => {
+            console.log(res.data);
             setMatchUp(res.data);
             setSubmitting(false);
         }).catch(() => {
@@ -42,11 +43,11 @@ const VotePage = () => {
         setPos(searchParams.get('position'));
     }, [searchParams])
 
-    const submitVote = (winner) => {
+    const submitVote = (result) => {
         if (submitting) return;
 
         let data = {...matchUp};
-        data.Winner = winner;
+        data.Result = result;
 
         setSubmitting(true);
         
@@ -76,19 +77,19 @@ const VotePage = () => {
                         <>
                             <button 
                                 className={`vote-button`} 
-                                aria-label={`Cast your vote for ${matchUp.PlayerOne.Name}`}
-                                onClick={() => submitVote(matchUp.PlayerOne)}
+                                aria-label={`Cast your vote for ${matchUp.Ranking1.Player.Name}`}
+                                onClick={() => submitVote(true)}
                                 disabled={submitting}>
-                                <PlayerCard player={matchUp.PlayerOne} >
+                                <PlayerCard player={matchUp.Ranking1.Player} >
                                     <ThumbsUp className="vote-icon" />
                                 </PlayerCard>
                             </button>
                             <button 
                                 className={`vote-button`} 
-                                aria-label={`Cast your vote for ${matchUp.PlayerTwo.Name}`}
-                                onClick={() => submitVote(matchUp.PlayerTwo)}
+                                aria-label={`Cast your vote for ${matchUp.Ranking1.Player.Name}`}
+                                onClick={() => submitVote(false)}
                                 disabled={submitting}>
-                                <PlayerCard player={matchUp.PlayerTwo}  >
+                                <PlayerCard player={matchUp.Ranking1.Player}  >
                                     <ThumbsUp className="vote-icon" />
                                 </PlayerCard>
                             </button>

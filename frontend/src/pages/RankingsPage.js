@@ -28,7 +28,7 @@ const RankingsPage = () => {
     ]
 
     const getRankings = useCallback(() => {
-        axios.get(`${GET_RANKINGS}`).then(res => {
+        axios.get(`${GET_RANKINGS}${'?username=Global'}${pos ? `&position=${pos}` :''}`).then(res => {
             console.print(res.data);
             setPlayers(res.data);
         }).catch(() => {

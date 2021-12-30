@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "proxy": "http://www.consensusrankings.com/",
   "version": "0.1.0",
   "main": "index.js",
   "private": true,
