@@ -17,8 +17,13 @@ class MatchupsList(APIView):
     List all matchups
     """
     def get(self, request):
+        username = request.GET.get('username')
+        if username is None:
+            username = "Global"
+        
         position = request.GET.get('position')
-        nextMatchup = self.CreateNextMatchup(position)
+        
+        nextMatchup = self.CreateNextMatchup(username, position)
         serializer = MatchupSerializer(nextMatchup, many=False)
         print(serializer.data)
         return Response(serializer.data)

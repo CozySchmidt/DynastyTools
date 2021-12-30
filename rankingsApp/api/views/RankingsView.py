@@ -13,10 +13,13 @@ Get list of rankings by username.  Uses Global if username not found
 class RankingsList(APIView):
     def get(self, request):
         username = request.GET.get('username')
-        username = username if username is not None else "Global"
+        if username is None:
+            username = "Global"
+        
         rankings = Ranking.objects.filter(User__Username=username)
         
         position = request.GET.get('position')
+        
         if position in Valid_Positions:
             rankings = rankings.filter(Player__Position=position)
         

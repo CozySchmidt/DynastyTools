@@ -24,7 +24,7 @@ const VotePage = () => {
                                 {label: 'TE', value: 'TE'}];
 
     const nextMatchUp = useCallback(() => {
-        axios.get(`${NEXT_MATCHUP}${pos ? `?position=${pos}` :''}`).then(res => {
+        axios.get(`${NEXT_MATCHUP}${`?username=Global`}${pos ? `&position=${pos}` :''}`).then(res => {
             console.log(res.data);
             setMatchUp(res.data);
             setSubmitting(false);
