@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useCallback, useEffect, useState } from "react";
 import axios from 'axios';
 import { GET_RANKINGS } from '../constants/api-urls';

@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useEffect, useState } from 'react';
 
 const ButtonGroup = ({ buttons, label , allowMultiple = false, onChange, defaultValue = allowMultiple ? [] : null, value, className}) => {

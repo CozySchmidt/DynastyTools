@@ -37,22 +37,23 @@ class MatchupsList(APIView):
     """
     Used for Getting the next matchup in get()
     """
-    def CreateNextMatchup(self, position):
-        players = Player.objects.all()
+    def CreateNextMatchup(self, username, position):
+        rankings = Ranking.objects.filter(User__Username=username)
+        print(username)
         print(position)
         if position in Valid_Positions:
-            players = players.filter(Position=position)
+            rankings = rankings.filter(Player__Position=position)
         
         #pick higher rated players more often
-        players = players.order_by('-Rating', 'Name')
-        index1 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + players.count() - 10))
-        index2 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + players.count() - 10))
+        rankings = rankings.order_by('-Player__Rating', 'Player__Name')
+        index1 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + rankings.count() - 10))
+        index2 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + rankings.count() - 10))
         if index1 == index2:
             if index1 == 0:
                 index1 += 1
             else:
                 index1 -= 1
-        nextMatchup = Matchup(PlayerOne=players[index1], PlayerTwo=players[index2])
+        nextMatchup = Matchup(Ranking1=rankings[index1], Ranking2=rankings[index2])
         return nextMatchup
 
     """
@@ -60,34 +61,32 @@ class MatchupsList(APIView):
     """
     def EvaluateMatchup(self, matchup):
         print(matchup)
-        if matchup['PlayerOne'] == None or matchup['PlayerTwo'] == None or matchup['Winner'] == None:
+        if matchup['Ranking1'] == None or matchup['Ranking2'] == None or matchup['Result'] == None:
             return
 
-        player1 = Player.objects.get(id=matchup['PlayerOne']['id'])
-        player2 = Player.objects.get(id=matchup['PlayerTwo']['id'])
+        result = matchup['Result']
+
+        ranking1 = Ranking.objects.get(id=matchup['Ranking1']['id'])
+        ranking2 = Ranking.objects.get(id=matchup['Ranking2']['id'])
 
         rePlayer1 = rankingsEngine.Player(
-            player1.id, player1.Rating, player1.Deviation, player1.Volatility)
+            ranking1.id, ranking1.Rating, ranking1.Deviation, ranking1.Volatility)
         rePlayer2 = rankingsEngine.Player(
-            player2.id, player2.Rating, player2.Deviation, player2.Volatility)
+            ranking2.id, ranking2.Rating, ranking2.Deviation, ranking2.Volatility)
 
-        if matchup['PlayerOne']['id'] == matchup['Winner']['id']:
-            rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [1])
-            rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [0])
-        elif matchup['PlayerTwo']['id'] == matchup['Winner']['id']:
-            rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [0])
-            rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [1])
+        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [not result])
+        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [result])
 
-        player1.Rating = rePlayer1.rating
-        player1.Deviation = rePlayer1.rd
-        player1.Volatility = rePlayer1.vol
+        ranking1.Rating = rePlayer1.rating
+        ranking1.Deviation = rePlayer1.rd
+        ranking1.Volatility = rePlayer1.vol
 
-        player2.Rating = rePlayer2.rating
-        player2.Deviation = rePlayer2.rd
-        player2.Volatility = rePlayer2.vol
+        ranking2.Rating = rePlayer2.rating
+        ranking2.Deviation = rePlayer2.rd
+        ranking2.Volatility = rePlayer2.vol
 
-        player1.save()
-        player2.save()
+        ranking1.save()
+        ranking2.save()
 
 
 class MatchupsView(APIView):
