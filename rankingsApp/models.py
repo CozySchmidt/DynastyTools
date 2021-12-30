@@ -33,7 +33,7 @@ class Ranking(models.Model):
     Volatility = models.FloatField(default=VOLATILITY_DEFAULT)
 
 class Matchup(models.Model):
-    UserRanking1 = models.ForeignKey(Ranking, related_name='UserRanking1', on_delete=models.CASCADE)
-    UserRanking2 = models.ForeignKey(Ranking, related_name='UserRanking2', on_delete=models.CASCADE)
+    Ranking1 = models.ForeignKey(Ranking, related_name='Ranking1', on_delete=models.CASCADE)
+    Ranking2 = models.ForeignKey(Ranking, related_name='Ranking2', on_delete=models.CASCADE)
     Result = models.BooleanField()
     ComparisonDatetime = models.DateTimeField(default=timezone.now)

@@ -54,16 +54,12 @@ class UploadView(View):
                     Birthdate = row['Birthdate'],
                     Draftyear = row['Draftyear']
                 )
-                
-                print(globalUser.id)
-                print(newPlayer.id)
 
                 Ranking(
                     User = globalUser,
                     Player = newPlayer,
                     Rating = row['Rating']
                 ).save()
-
 
             returnmsg = {"status_code": 200}
             print('import successful')
