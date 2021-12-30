@@ -27,9 +27,9 @@ const RankingsPage = () => {
         {label: (<Grid />), value: 'grid'}
     ]
 
-
     const getRankings = useCallback(() => {
-        axios.get(`${GET_RANKINGS}${pos ? `?position=${pos}` :''}`).then(res => {
+        axios.get(`${GET_RANKINGS}`).then(res => {
+            console.print(res.data);
             setPlayers(res.data);
         }).catch(() => {
             setError('Oops! It looks like we\'re having trouble gathering the rankings. Please try again later.');

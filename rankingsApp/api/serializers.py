@@ -1,29 +1,34 @@
 from rest_framework import serializers
-from rankingsApp.models import Player, Matchup
+from rankingsApp.models import Player, Matchup, User, Ranking
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('Username', 'Password')
+
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ('id', 'Name', 'Rating', 'Team', 'Position', 'Age', 'Birthdate', 'Draftyear')
-        extra_kwargs = {
-            "id": {
-                "read_only": False,
-                "required": False,
-            },
-        }
+        fields = ('Name', 'Team', 'Position', 'Age', 'Birthdate', 'Draftyear')
+
+
+class RankingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ranking
+        fields = ('User', 'Player', 'Rating', 'Deviation', 'Volatility')
 
 
 class MatchupSerializer(serializers.ModelSerializer):
-    PlayerOne = PlayerSerializer(many=False)
-    PlayerTwo = PlayerSerializer(many=False)
-    Winner = PlayerSerializer(many=False, required=False)
+    UserRanking1 = RankingSerializer(many=False)
+    UserRanking2 = RankingSerializer(many=False)
     class Meta:
         model = Matchup
-        fields = ('PlayerOne', 'PlayerTwo', 'Winner')
+        fields = ('UserRanking1', 'UserRanking2', 'Result')
 
     def create(self, validated_data):
-        PlayerOne = Player.objects.get(id=validated_data.pop('PlayerOne')['id'])
-        PlayerTwo = Player.objects.get(id=validated_data.pop('PlayerTwo')['id'])
-        Winner = Player.objects.get(id=validated_data.pop('Winner')['id'])
-        MatchUp = Matchup.objects.create(PlayerOne=PlayerOne, PlayerTwo=PlayerTwo, Winner=Winner)
+        UserRanking1 = Player.objects.get(id=validated_data.pop('UserRanking1')['id'])
+        UserRanking2 = Player.objects.get(id=validated_data.pop('UserRanking2')['id'])
+        Result = Player.objects.get(id=validated_data.pop('Result'))
+        MatchUp = Matchup.objects.create(UserRanking1=UserRanking1, UserRanking2=UserRanking2, Result=Result)
         return MatchUp
