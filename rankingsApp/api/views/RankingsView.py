@@ -23,7 +23,7 @@ class RankingsList(APIView):
         if position in Valid_Positions:
             rankings = rankings.filter(Player__Position=position)
         
-        rankings = rankings.order_by('-Rating', 'Player__Name')
+        rankings = rankings.order_by('-Rating')
 
         serializer = RankingSerializer(rankings, many=True)
         return Response(serializer.data)

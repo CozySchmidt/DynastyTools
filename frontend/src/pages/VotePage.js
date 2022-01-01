@@ -25,7 +25,6 @@ const VotePage = () => {
 
     const nextMatchUp = useCallback(() => {
         axios.get(`${NEXT_MATCHUP}${`?username=Global`}${pos ? `&position=${pos}` :''}`).then(res => {
-            console.log(res.data);
             setMatchUp(res.data);
             setSubmitting(false);
         }).catch(() => {
@@ -51,7 +50,6 @@ const VotePage = () => {
         data.Result = result;
 
         setSubmitting(true);
-        
         axios.post(INSERT_MATCHUP, data).then(() => {
             nextMatchUp();
         });
@@ -87,10 +85,10 @@ const VotePage = () => {
                             </button>
                             <button 
                                 className={`vote-button`} 
-                                aria-label={`Cast your vote for ${matchUp.Ranking1.Player.Name}`}
+                                aria-label={`Cast your vote for ${matchUp.Ranking2.Player.Name}`}
                                 onClick={() => submitVote(false)}
                                 disabled={submitting}>
-                                <PlayerCard player={matchUp.Ranking1.Player}  >
+                                <PlayerCard player={matchUp.Ranking2.Player}  >
                                     <ThumbsUp className="vote-icon" />
                                 </PlayerCard>
                             </button>

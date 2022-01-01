@@ -1,3 +1,8 @@
+from re import M, match
+from typing import Match
+from rest_framework import response
+
+from rest_framework.serializers import Serializer
 from rankingsApp.api.serializers import *
 from rankingsApp.models import *
 from rest_framework.views import APIView
@@ -18,39 +23,22 @@ class MatchupsList(APIView):
     """
     def get(self, request):
         username = request.GET.get('username')
-        if username is None:
-            username = "Global"
-        
         position = request.GET.get('position')
+        m = self.CreateNextMatchup(username, position)
+        s = MatchupSerializer(m, many=False)
+        return Response(s.data)
         
-        nextMatchup = self.CreateNextMatchup(username, position)
-        serializer = MatchupSerializer(nextMatchup, many=False)
-        print(serializer.data)
-        return Response(serializer.data)
-
-    """
-    Insert matchup
-    """
-    def post(self, request):
-        serializer = MatchupSerializer(data=request.data)
-        if serializer.is_valid():
-            self.EvaluateMatchup(serializer.validated_data)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     """
     Used for Getting the next matchup in get()
     """
     def CreateNextMatchup(self, username, position):
         rankings = Ranking.objects.filter(User__Username=username)
-        print(username)
-        print(position)
         if position in Valid_Positions:
             rankings = rankings.filter(Player__Position=position)
-        
+      
         #pick higher rated players more often
-        rankings = rankings.order_by('-Player__Rating', 'Player__Name')
+        rankings = rankings.order_by('-Rating', 'id')
+
         index1 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + rankings.count() - 10))
         index2 = math.floor(abs(random.uniform(0, 1) - random.uniform(0, 1)) * (1 + rankings.count() - 10))
         if index1 == index2:
@@ -58,40 +46,54 @@ class MatchupsList(APIView):
                 index1 += 1
             else:
                 index1 -= 1
-        nextMatchup = Matchup(Ranking1=rankings[index1], Ranking2=rankings[index2])
+        
+        user = User.objects.get(Username=username)
+        nextMatchup = Matchup(Ranking1=rankings[index1], Ranking2=rankings[index2], User=user, Result=None)
         return nextMatchup
 
+    """
+    Insert matchup
+    """
+    def post(self, request):
+        serializer = MatchupSerializer(data=request.data)
+        if serializer.is_valid():
+            matchup = serializer.create()
+            self.EvaluateMatchup(matchup)
+            
+            globalUser = User.objects.get(id=1)
+            if matchup.User != globalUser:
+                matchup.User = globalUser
+                matchup.Ranking1 = Ranking.objects.get(User=globalUser, Player=matchup.Ranking1.Player)
+                matchup.Ranking2 = Ranking.objects.get(User=globalUser, Player=matchup.Ranking2.Player)
+                self.EvaluateMatchup(matchup)
+
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
     """
     Update the ratings of the winner and loser
     """
     def EvaluateMatchup(self, matchup):
-        print(matchup)
-        if matchup['Ranking1'] == None or matchup['Ranking2'] == None or matchup['Result'] == None:
-            return
-
-        result = matchup['Result']
-
-        ranking1 = Ranking.objects.get(id=matchup['Ranking1']['id'])
-        ranking2 = Ranking.objects.get(id=matchup['Ranking2']['id'])
-
         rePlayer1 = rankingsEngine.Player(
-            ranking1.id, ranking1.Rating, ranking1.Deviation, ranking1.Volatility)
+            matchup.Ranking1.Player.Name, matchup.Ranking1.Rating, matchup.Ranking1.Deviation, matchup.Ranking1.Volatility)
         rePlayer2 = rankingsEngine.Player(
-            ranking2.id, ranking2.Rating, ranking2.Deviation, ranking2.Volatility)
+            matchup.Ranking2.Player.Name, matchup.Ranking2.Rating, matchup.Ranking2.Deviation, matchup.Ranking2.Volatility)
 
-        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [not result])
-        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [result])
+        rePlayer1.update_player([rePlayer2.rating], [rePlayer2.rd], [matchup.Result])
+        rePlayer2.update_player([rePlayer1.rating], [rePlayer1.rd], [not matchup.Result])
 
-        ranking1.Rating = rePlayer1.rating
-        ranking1.Deviation = rePlayer1.rd
-        ranking1.Volatility = rePlayer1.vol
+        matchup.Ranking1.Rating = rePlayer1.rating
+        matchup.Ranking1.Deviation = rePlayer1.rd
+        matchup.Ranking1.Volatility = rePlayer1.vol
 
-        ranking2.Rating = rePlayer2.rating
-        ranking2.Deviation = rePlayer2.rd
-        ranking2.Volatility = rePlayer2.vol
+        matchup.Ranking2.Rating = rePlayer2.rating
+        matchup.Ranking2.Deviation = rePlayer2.rd
+        matchup.Ranking2.Volatility = rePlayer2.vol
 
-        ranking1.save()
-        ranking2.save()
+        matchup.Ranking1.save()
+        matchup.Ranking2.save()
+
 
 
 class MatchupsView(APIView):
