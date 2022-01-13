@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { LogIn, ThumbsUp, Tool, TrendingUp } from 'react-feather';
 import { NavLink } from 'react-router-dom';

@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useEffect, useRef, useState } from "react";
 import { User } from "react-feather";
 
