@@ -34,24 +34,33 @@ class UploadView(View):
 
     def post(self, request):
         #date_patterns = ["%m/%d/%Y"]
-        playerFile = io.TextIOWrapper(request.FILES['players'].file)
-        playerDict = csv.DictReader(playerFile)
-        playerList = list(playerDict)
-        objs = [
-            Player(
-                Name = row['Name'],
-                Team = row['Team'],
-                Position = row['Position'],
-                Rating = row['Rating'],
-                Age = row['Age'],
-                Birthdate = row['Birthdate'],
-                Draftyear = row['Draftyear']
-            )
-            for row in playerList
-        ]
         try:
             Player.objects.all().delete()
-            msg = Player.objects.bulk_create(objs)
+            Ranking.objects.all().delete()
+
+            globalUser, result = User.objects.get_or_create(Username='Global')
+
+            playerFile = io.TextIOWrapper(request.FILES['players'].file)
+            playerDict = csv.DictReader(playerFile)
+            playerList = list(playerDict)
+            
+            for row in playerList:
+                
+                newPlayer, _ = Player.objects.get_or_create(
+                    Name = row['Name'],
+                    Team = row['Team'],
+                    Position = row['Position'],
+                    Age = row['Age'],
+                    Birthdate = row['Birthdate'],
+                    Draftyear = row['Draftyear']
+                )
+
+                Ranking(
+                    User = globalUser,
+                    Player = newPlayer,
+                    Rating = row['Rating']
+                ).save()
+
             returnmsg = {"status_code": 200}
             print('import successful')
         except Exception as e:
